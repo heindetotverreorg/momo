@@ -1,0 +1,42 @@
+{
+  "momo": {
+    "en": {
+      "global": {
+        "forms": {
+          "labels": {
+            "email": "Email",
+            "password": "Password",
+            "passwordCheck": "Password again",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "loginButton": "Login",
+            "registerButton": "Register"
+          },
+          "validators": {
+            "email": "is not an email",
+            "nonumber": "no numbers allowed",
+            "notempty": "is required",
+            "default": "default"
+          },
+          "messages": {
+            "global-validation-message": "There is an error with the following fields: "
+          }
+        }
+      },
+      "admin": {
+        "auth": {
+          "title": "Authentication",
+          "notifications": {
+            "isNotMember": "Not a member yet?",
+            "isMember": "Already a member?"
+          },
+          "buttons": {
+            "goToLogin": "Go to login",
+            "goToRegister": "Go to register"
+          },
+          "validation": "Er is een fout geconstateerd in de volgende velden: "
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "momo",
+  "version": "1.0.0",
+  "description": "platform for creating basic web pages and content and serving those pages",
+  "scripts": {
+    "mongo": "mongod --dbpath ./server/mongo/db",
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "mesh-ui-components": "^0.2.9",
+    "nuxt": "^3.1.2"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.3.3",
+    "@as-integrations/h3": "^1.1.5",
+    "@nuxtjs/apollo": "^5.0.0-alpha.5",
+    "graphql": "^16.6.0",
+    "mongoose": "^6.9.1"
+  },
+  "license": "ISC"
+}
