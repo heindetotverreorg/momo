@@ -33,11 +33,10 @@ const connect = async (connectionString : string) => {
 }
 
 const createToken = async (user : User) => {
-  const config = useRuntimeConfig()
   const alg = 'HS256'
-  const secret = new TextEncoder().encode(config.secret)
+  const secret = new TextEncoder().encode(process.env.TOKEN_SECRET)
   
-  return await new jose.SignJWT({ user: user.id })
+  return await new jose.SignJWT({ user: user.id, role: user.role })
     .setProtectedHeader({ alg })
     .setExpirationTime('1h')
     .sign(secret)

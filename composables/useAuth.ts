@@ -8,7 +8,6 @@ export const useAuth = () => {
         body: formValues,
         method: 'post'
       })
-      console.log(data)
       if (data.value?.authenticated) {
         const router = useRouter()
         router.push('/admin/dashboard')
