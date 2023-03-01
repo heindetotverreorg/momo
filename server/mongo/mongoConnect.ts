@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
-import { PageSchema } from '~~/server/mongo/schemas'
-
+import { PageSchema, UserSchema } from '~~/server/mongo/schemas'
 
 try {
   const connectionString = process.env.MONGO_URL as string
@@ -10,9 +9,11 @@ try {
 }
 
 const Pages = mongoose.model('Pages', PageSchema)
+const Users = mongoose.model('USers', UserSchema)
 
 export {
-  Pages
+  Pages,
+  Users
 }
 
 async function connect(connectionString : string) {

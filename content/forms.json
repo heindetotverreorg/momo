@@ -16,6 +16,8 @@
             "email": "is not an email",
             "nonumber": "no numbers allowed",
             "notempty": "is required",
+            "minlength": "should be minimal 8 characters",
+            "specialchar": "should have at least 1 special character",
             "default": "default"
           },
           "messages": {

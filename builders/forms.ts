@@ -4,7 +4,10 @@ import { createSafeId } from "~~/utils/createSafeId"
 import {
   nonumber,
   email,
-  notempty
+  notempty,
+  specialchar,
+  minlength,
+  issamevalue
 } from '~~/utils/validators'
 
 const elements = {
@@ -35,7 +38,8 @@ const formData = {
         ...elements.text,
         key: 'email',
         type: 'email',
-        validators: [email]
+        validators: [email],
+        highlightValidation: false
       },
       {
         ...elements.text,
@@ -59,32 +63,31 @@ const formData = {
       {
         ...elements.text,
         key: 'firstName',
-        validators: [nonumber]
+        validators: [notempty, nonumber]
       },
       {
         ...elements.text,
         key: 'lastName',
-        validators: [nonumber]
+        validators: [notempty, nonumber]
       },
       {
         ...elements.text,
         key: 'email',
         type: 'email',
-        validators: [email]
+        validators: [notempty, email]
       },
       {
         ...elements.text,
         key: 'password',
         type: 'password',
-        validators: [notempty],
-        highlightValidation: false
+        validators: [notempty, specialchar, minlength]
       },
       {
         ...elements.text,
         key: 'passwordCheck',
+        secondValidationValue: 'password',
         type: 'password',
-        validators: notempty,
-        highlightValidation: false
+        validators: [issamevalue]
       },
       {
         ...elements.button,

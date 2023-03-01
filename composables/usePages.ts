@@ -10,18 +10,22 @@ export const usePages = () => {
     const variables = {
       page
     }
-    const { mutate: createPage } = useMutation<CreatePageResult>(createPageMutation, { variables })
-    const result = await createPage()
-    if (result?.data) {
-      const { data } = result
-      const duplicateIndex = state.pages.findIndex(page => {
-        return page.id === data.createPage.id
-      })
-      if (duplicateIndex >= 0) {
-        state.pages[duplicateIndex] = data.createPage
-      } else {
-        state.pages.push(data.createPage)
+    try {
+      const { mutate: createPage } = useMutation<CreatePageResult>(createPageMutation, { variables })
+      const result = await createPage()
+      if (result?.data) {
+        const { data } = result
+        const duplicateIndex = state.pages.findIndex(page => {
+          return page.id === data.createPage.id
+        })
+        if (duplicateIndex >= 0) {
+          state.pages[duplicateIndex] = data.createPage
+        } else {
+          state.pages.push(data.createPage)
+        }
       }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -29,12 +33,16 @@ export const usePages = () => {
     const variables = {
       id
     }
-    const { mutate: deletePage } = await useMutation<DeletePageResult>(deletePageMutation, { variables })
-    const result = await deletePage()
-    if (result?.data) {
-      const { data } = result
-      const newPagesArray = state.pages.filter(page => page.id !== data.deletePage.id)
-      state.pages = newPagesArray
+    try {
+      const { mutate: deletePage } = await useMutation<DeletePageResult>(deletePageMutation, { variables })
+      const result = await deletePage()
+      if (result?.data) {
+        const { data } = result
+        const newPagesArray = state.pages.filter(page => page.id !== data.deletePage.id)
+        state.pages = newPagesArray
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 

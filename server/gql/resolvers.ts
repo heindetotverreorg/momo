@@ -1,5 +1,4 @@
-import { Pages } from '~~/server/mongo/mongoConnect'
-
+import { Pages, Users } from '~~/server/mongo/mongoConnect'
 
 export const resolvers = {
   Query: {
@@ -24,6 +23,20 @@ export const resolvers = {
       } catch (error) {
         throw error
       }
+    },
+    singleUser: async (_:any, { email, password }:any) => {
+      try {
+        const user = await Users.findOne({ email: email })
+        if (!user) {
+          throw new Error(`No user present for email: ${email}`)
+        }
+        if (user.password !== password) {
+          throw new Error(`Password email combination not correct: ${user.password}. payload: ${email} ${password}`)
+        }
+        return user
+      } catch (error) {
+        throw error
+      }
     }
   },
   Mutation: {
@@ -44,6 +57,21 @@ export const resolvers = {
         throw error
       }
     },
+    createUser: async (_:any, { user }:any) => {
+      try {
+        const newUser = new Users({
+          ...user
+        })
+        const existingUser = await Users.findOne({ email: user.email })
+        if (existingUser) {
+          throw new Error(`User with email: ${user.email} already exists not found`)
+        }
+        await newUser.save()
+        return newUser
+      } catch (error) {
+        throw error
+      }
+    },
     deletePage: async (_:any, { id }:any) => {
       try {
         const deletedPage = await Pages.findOneAndDelete({ id: id })
@@ -51,6 +79,17 @@ export const resolvers = {
           throw new Error(`Page with ${id} not found`)
         }
         return deletedPage
+      } catch (error) {
+        throw error
+      }
+    },
+    deleteUser: async (_:any, { id }:any) => {
+      try {
+        const deletedUser = await Pages.findOneAndDelete({ id: id })
+        if (!deletedUser) {
+          throw new Error(`User with ${id} not found`)
+        }
+        return deletedUser
       } catch (error) {
         throw error
       }

@@ -1,4 +1,5 @@
 <template>
+  {{ session }}
   <div>
     <button @click="createPageTesting('1')">Click me to create a first level page</button>
     <button @click="createPageTesting('2')">Click me to create a second level page</button>
@@ -12,8 +13,15 @@
     <p>{{ pages }}</p>
   </div>
 </template>
-<script lang="ts" setup>
-  import { usePages } from '~~/composables/usePages'
+<script setup lang="ts">
+import { usePages } from '~~/composables/usePages'
+
+  definePageMeta({
+    layout: 'admin',
+    middleware: ["auth"]
+  });
+
+  const session = useState('session')
 
   const normalPage = {
     name: 'name',

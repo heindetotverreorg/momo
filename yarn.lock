@@ -1886,6 +1886,13 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/jsonwebtoken@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.npmjs.org/@types/jsonwebtoken/-/jsonwebtoken-9.0.1.tgz"
+  integrity sha512-c5ltxazpWabia/4UzhIoaDcIza4KViOQhdbjRlfcIGVnsE3c3brkz9Z+F/EeJIECOQP7W7US2hNE930cWWkPiw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/long@^4.0.0":
   version "4.0.2"
   resolved "https://registry.npmjs.org/@types/long/-/long-4.0.2.tgz"
@@ -3856,6 +3863,11 @@ jiti@^1.15.0, jiti@^1.16.0, jiti@^1.16.2, jiti@^1.17.0:
   resolved "https://registry.npmjs.org/jiti/-/jiti-1.17.0.tgz"
   integrity sha512-CByzPgFqYoB9odEeef7GNmQ3S5THIBOtzRYoSCya2Sv27AuQxy2jgoFjQ6VTF53xsq1MXRm+YWNvOoDHUAteOw==
 
+jose@^4.13.0:
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.13.0.tgz#bee9096c666301641d360577572a3834c3842dfc"
+  integrity sha512-v6BN7fuPVfG9XIxcPT2jzyAg5EmA/mtNeJEXJ7d31Wz7fFOqOZeN8mPtNJYQmnuAIxJII7EcURcbZ7qXs9a4kA==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
@@ -4121,10 +4133,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mesh-ui-components@^0.2.9:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/mesh-ui-components/-/mesh-ui-components-0.2.9.tgz#91f32e03835d43c1b44bb8a56e4cd1a72fc9b0a4"
-  integrity sha512-nCzo+GR5DNuiOveHIDt6p4ebi6QNJHoxyECcmipcEa/BaRERcHEDF/tlZNhwzFNJDj2nxT+MoRElNq2+Ch79tw==
+mesh-ui-components@^0.2.14:
+  version "0.2.14"
+  resolved "https://registry.npmjs.org/mesh-ui-components/-/mesh-ui-components-0.2.14.tgz"
+  integrity sha512-PWIVMmdEquiGVg97xn/7Td0lynkTBKWZtnYW69N4dC52Vu35e3V5+XHWXF6f+98jYAGwzHcfx0L4ImMBHtkryA==
   dependencies:
     vue "^3.2.45"
 
@@ -5968,7 +5980,7 @@ vue-router@^4.1.6:
 
 vue@^3.2.45, vue@^3.2.47:
   version "3.2.47"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-3.2.47.tgz#3eb736cbc606fc87038dbba6a154707c8a34cff0"
+  resolved "https://registry.npmjs.org/vue/-/vue-3.2.47.tgz"
   integrity sha512-60188y/9Dc9WVrAZeUVSDxRQOZ+z+y5nO2ts9jWXSTkMvayiWxCWOWtBQoYjLeccfXkiiPZWAHcV+WTPhkqJHQ==
   dependencies:
     "@vue/compiler-dom" "3.2.47"

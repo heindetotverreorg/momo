@@ -13,9 +13,14 @@ export const typeDefs =  `#graphql
     author: String
   }
 
-  type Query {
-    pages: [Page]
-    singlePage(slug: String): Page
+  type User {
+    id: String
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    group: Int
+    role: String
   }
 
   input PageInput {
@@ -32,9 +37,27 @@ export const typeDefs =  `#graphql
     author: String
   }
 
+  input UserInput {
+    id: String
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    group: Int
+    role: String
+  }
+
+  type Query {
+    pages: [Page]
+    singlePage(slug: String): Page
+    singleUser(email: String, password: String): User
+  }
+
   type Mutation {
     createPage(page: PageInput): Page
+    createUser(user: UserInput): User
     deletePage(id: String): Page
+    deleteUser(id: String): User
   }
 
 `

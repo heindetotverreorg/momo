@@ -18,7 +18,7 @@ import { usePath } from '~~/composables/usePath';
 
   page.value = await fetchSinglePage(
     slug,
-    pathArr as string[], 
+    pathArr, 
     fullPath
   )
 </script>

@@ -1,4 +1,10 @@
 export default defineNuxtConfig({
+  runtimeConfig: {
+    secret: process.env.TOKEN_SECRET,
+    public: {
+      secret: process.env.TOKEN_SECRET
+    }
+  },
   modules: [
     '@nuxtjs/apollo',
     './modules/mesh-ui-components'
