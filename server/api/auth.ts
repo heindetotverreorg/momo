@@ -11,6 +11,10 @@ export default defineEventHandler(async (event) => {
   const Users = mongoose.model('Users', UserSchema)
   const user = await Users.findOne({ email: email }) as User
 
+  if (!email || !password) {
+    throw new Error(`No email or password sent`)
+  }
+
   if (user?.password !== password) {
     throw new Error(`Password email combination not correct`)
   }
@@ -36,7 +40,7 @@ const createToken = async (user : User) => {
   const alg = 'HS256'
   const secret = new TextEncoder().encode(process.env.TOKEN_SECRET)
   
-  return await new jose.SignJWT({ user: user.id, role: user.role })
+  return await new jose.SignJWT({ user: user?.id, role: user?.role })
     .setProtectedHeader({ alg })
     .setExpirationTime('1h')
     .sign(secret)

@@ -11,7 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "mesh-ui-components": "^0.2.14",
+    "mesh-ui-components": "^0.2.17",
     "nuxt": "^3.1.2"
   },
   "dependencies": {

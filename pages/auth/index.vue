@@ -4,7 +4,7 @@
     :content="getScopedContent"
     :form="currentForm"
     :formValues="formValues"
-    @submit="onSubmit"
+    @submit="onSubmit($event)"
   />
   <MeshButton
     name="auth"
@@ -38,14 +38,16 @@ import { MeshButton, MeshFormWrapper } from 'mesh-ui-components'
 
   const currentForm = computed(() => authMethod.value === FORM_NAMES.LOGIN ? formData.login : formData.register)
 
-  const onSubmit = async ({ formValues } : Record<string, any>) => {
+  const onSubmit = async (form : Record<string, any>) => {
     if (authMethod.value === FORM_NAMES.LOGIN) {
-      await login(formValues.value)
+      response.value = await login(form.formValues)
+      formValues.value.password = ''
     }
     if (authMethod.value === FORM_NAMES.REGISTER) {
-      await register(formValues.value)
+      response.value = await register(form.formValues)
+      formValues.value.password = ''
+      formValues.value.passwordCheck = ''
     }
-    formValues.value = {}
   }
 
   const updateAuthMethod = () => {

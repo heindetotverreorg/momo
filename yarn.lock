@@ -1886,13 +1886,6 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/jsonwebtoken@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.npmjs.org/@types/jsonwebtoken/-/jsonwebtoken-9.0.1.tgz"
-  integrity sha512-c5ltxazpWabia/4UzhIoaDcIza4KViOQhdbjRlfcIGVnsE3c3brkz9Z+F/EeJIECOQP7W7US2hNE930cWWkPiw==
-  dependencies:
-    "@types/node" "*"
-
 "@types/long@^4.0.0":
   version "4.0.2"
   resolved "https://registry.npmjs.org/@types/long/-/long-4.0.2.tgz"
@@ -4133,10 +4126,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mesh-ui-components@^0.2.14:
-  version "0.2.14"
-  resolved "https://registry.npmjs.org/mesh-ui-components/-/mesh-ui-components-0.2.14.tgz"
-  integrity sha512-PWIVMmdEquiGVg97xn/7Td0lynkTBKWZtnYW69N4dC52Vu35e3V5+XHWXF6f+98jYAGwzHcfx0L4ImMBHtkryA==
+mesh-ui-components@^0.2.17:
+  version "0.2.17"
+  resolved "https://registry.yarnpkg.com/mesh-ui-components/-/mesh-ui-components-0.2.17.tgz#a6f76a0b02ace0152ff7d625cc2e7555ccefaffe"
+  integrity sha512-yAgsZzSfHT7A02W/ECwL15a2LThdbWx5xdWyilMcRgs+QYf/DXa9g94UXpBj3zFZ/rJH+18dY1Ob/4VISnz2Rg==
   dependencies:
     vue "^3.2.45"
 
