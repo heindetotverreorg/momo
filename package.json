@@ -23,5 +23,9 @@
     "jose": "^4.13.0",
     "mongoose": "^6.9.1"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "npm": "^8.13.2",
+    "node": "^18.6"
+  }
 }
