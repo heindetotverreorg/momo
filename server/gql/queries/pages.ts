@@ -25,8 +25,8 @@ export const deletePageMutation = gql`
 `
 
 export const fetchPagesQuery = gql`
-  query fetchPages {
-    pages {
+  query fetchPages ($admin: Boolean) {
+    pages (admin: $admin) {
       name
       slug
       isInMenu
@@ -57,11 +57,11 @@ export const fetchSinglePageQuery = gql`
       id
       author
     }
-    # pages {
-    #   slug
-    #   title
-    #   parent
-    #   menuOrder
-    # }
+    pages {
+      slug
+      title
+      parent
+      menuOrder
+    }
   }
 `

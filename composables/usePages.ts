@@ -49,7 +49,7 @@ export const usePages = () => {
   }
 
   const fetchPages = async () => {
-    const { data, error } = await useAsyncQuery<{ pages: Page[] }>(fetchPagesQuery)
+    const { data, error } = await useAsyncQuery<{ pages: Page[] }>(fetchPagesQuery, { admin: true })
     if (error.value) {
       await handleError(error.value)
     }

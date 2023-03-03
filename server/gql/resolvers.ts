@@ -3,8 +3,8 @@ import { ERRORS } from '~~/constants/errors';
 
 export const resolvers = {
   Query: {
-    pages: async (parent:any, args:any,context:any) => {
-      if (!context.token) {
+    pages: async (parent:any, { admin }:any,context:any) => {
+      if (admin && !context.token) {
         throw new Error(ERRORS.NOT_AUTHENTICATED_FOR_ADMIN)
       }
       try {
