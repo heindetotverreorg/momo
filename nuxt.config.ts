@@ -17,7 +17,7 @@ export default defineNuxtConfig({
         },
         authType: 'Bearer',
         authHeader: 'Authorization',
-        httpEndpoint: "http://localhost:3000/gql",
+        httpEndpoint: process.env.GQL_SERVER || 'http://localhost:3000/gql',
         tokenName: 'momo:token',
         tokenStorage: "cookie"
       }
