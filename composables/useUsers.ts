@@ -1,6 +1,7 @@
 import { createUserMutation, fetchSingleUserQuery } from '~~/server/gql/queries/users'
-import { CreateUserResult, SinglePageResult } from '~~/types/users'
 import { createSafeId } from "~~/utils/createSafeId"
+import { useAuth } from '~~/composables/useAuth'
+import { User } from '~~/types/users'
 
 export const useUsers = () => {
   const createUser = async (formValues : Record<string, any>) => {
@@ -13,13 +14,15 @@ export const useUsers = () => {
       }
     }
     try {
-      const { mutate: createUser } = useMutation<CreateUserResult>(createUserMutation, { variables })
+      const { mutate: createUser } = useMutation(createUserMutation, { variables })
       const result = await createUser()
       if (result?.data) {
-        console.log('LOGIN AND DO AUTH')
+        const { login } = useAuth()
+        return await login({ email: formValues.email, password: formValues.password })
       }
+      return result?.errors
     } catch (error) {
-      console.log(error)
+      return error
     }
   }
 
@@ -29,10 +32,10 @@ export const useUsers = () => {
       password: formValues.password
     }
     try {
-      const { data } = await useAsyncQuery<SinglePageResult>(fetchSingleUserQuery, variables)
-      return data.value
+      const { result } = await useQuery<{ user: User }>(fetchSingleUserQuery, variables)
+      return result?.value?.user
     } catch (error) {
-      console.log(error)
+      return error
     }
   }
 

@@ -1,4 +1,6 @@
 import { useUsers } from '~~/composables/useUsers'
+import { useState } from '#app'
+
 const { createUser } = useUsers()
 
 export const useAuth = () => {
@@ -20,7 +22,7 @@ export const useAuth = () => {
   }
 
   const register = async (formValues : Record<string, any>) => {
-    await createUser(formValues)
+    return await createUser(formValues)
   }
 
   return {

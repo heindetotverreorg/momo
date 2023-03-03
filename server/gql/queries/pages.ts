@@ -57,11 +57,11 @@ export const fetchSinglePageQuery = gql`
       id
       author
     }
-    pages {
-      slug
-      title
-      parent
-      menuOrder
-    }
+    # pages {
+    #   slug
+    #   title
+    #   parent
+    #   menuOrder
+    # }
   }
 `

@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = await createToken(user)
-  setCookie(event, 'token', token, { httpOnly: true })
+  setCookie(event, 'momo:token', token, { httpOnly: true })
 
   return {
     authenticated: true
@@ -42,6 +42,6 @@ const createToken = async (user : User) => {
   
   return await new jose.SignJWT({ user: user?.id, role: user?.role })
     .setProtectedHeader({ alg })
-    .setExpirationTime('1h')
+    .setExpirationTime('1hr')
     .sign(secret)
 }

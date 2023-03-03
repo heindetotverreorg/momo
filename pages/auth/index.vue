@@ -25,7 +25,8 @@ import { FORM_NAMES } from '~~/constants/forms'
 import { MeshButton, MeshFormWrapper } from 'mesh-ui-components'
 
   definePageMeta({
-    layout: 'admin'
+    layout: 'admin',
+    middleware: ['auth']
   });
 
   const { queryKey, updateQuery } = usePath()

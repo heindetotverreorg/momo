@@ -1,5 +1,7 @@
+import { ERRORS } from '~~/constants/errors'
 import { createPageMutation, deletePageMutation, fetchPagesQuery, fetchSinglePageQuery } from '~~/server/gql/queries/pages'
-import { Page, CreatePageResult, DeletePageResult, PagesResult, SinglePageResult } from '~~/types/pages'
+import { Page } from '~~/types/pages'
+import { handleError } from '~~/utils/handleError'
 
 export const usePages = () => {
   const state = reactive({
@@ -11,7 +13,7 @@ export const usePages = () => {
       page
     }
     try {
-      const { mutate: createPage } = useMutation<CreatePageResult>(createPageMutation, { variables })
+      const { mutate: createPage } = useMutation(createPageMutation, { variables })
       const result = await createPage()
       if (result?.data) {
         const { data } = result
@@ -25,7 +27,7 @@ export const usePages = () => {
         }
       }
     } catch (error) {
-      console.log(error)
+      return error
     }
   }
 
@@ -34,7 +36,7 @@ export const usePages = () => {
       id
     }
     try {
-      const { mutate: deletePage } = await useMutation<DeletePageResult>(deletePageMutation, { variables })
+      const { mutate: deletePage } = await useMutation(deletePageMutation, { variables })
       const result = await deletePage()
       if (result?.data) {
         const { data } = result
@@ -42,24 +44,31 @@ export const usePages = () => {
         state.pages = newPagesArray
       }
     } catch (error) {
-      console.log(error)
+      return error
     }
   }
 
   const fetchPages = async () => {
-    const { data } = await useAsyncQuery<PagesResult>(fetchPagesQuery)
+    const { data, error } = await useAsyncQuery<{ pages: Page[] }>(fetchPagesQuery)
+    if (error.value) {
+      await handleError(error.value)
+    }
     if(data.value?.pages) {
       state.pages = data.value.pages
     }
+    return state.pages
   }
 
   const fetchSinglePage = async (slug : String, pathArr : String[], fullPath : String) => {
     const variables = {
       slug, fetchPolicy: "no-cache" 
     }
-    const { data } = await useAsyncQuery<SinglePageResult>(fetchSinglePageQuery, variables)
-      if (!isValidPath(pathArr, data?.value?.singlePage)) {
-        throw createError({ statusCode: 404, statusMessage: `Page Not Found: ${fullPath}`, fatal: true })
+    const { data, error } = await useAsyncQuery<{singlePage : Page}>(fetchSinglePageQuery, variables)
+      if (error.value) {
+        await handleError(error.value)
+      }
+      if (!isValidPath(pathArr, data.value?.singlePage)) {
+        await handleError({ message: ERRORS.INVALID_SINGLE_PAGE_PARENT_TREE })
       }
       return data.value?.singlePage
   }

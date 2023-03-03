@@ -12,26 +12,6 @@ interface Page {
   author: String
 }
 
-interface CreatePageResult {
-  createPage: Page
-}
-
-interface DeletePageResult {
-  deletePage: Page
-}
-
-interface PagesResult {
-  pages: [Page]
-}
-
-interface SinglePageResult {
-  singlePage: Page
-}
-
 export {
-  Page,
-  CreatePageResult,
-  DeletePageResult,
-  PagesResult,
-  SinglePageResult
+  Page
 }

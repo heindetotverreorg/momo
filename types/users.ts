@@ -8,16 +8,6 @@ interface User {
   role: number,
 }
 
-interface CreateUserResult {
-  createPage: User
-}
-
-interface SinglePageResult {
-  singleUser: User
-}
-
 export {
-  CreateUserResult,
-  SinglePageResult,
   User
 }

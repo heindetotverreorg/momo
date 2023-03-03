@@ -1,37 +1,41 @@
 import { Pages, Users } from '~~/server/mongo/mongoConnect'
+import { ERRORS } from '~~/constants/errors';
 
 export const resolvers = {
   Query: {
-    pages: async () => {
+    pages: async (parent:any, args:any,context:any) => {
+      if (!context.token) {
+        throw new Error(ERRORS.NOT_AUTHENTICATED_FOR_ADMIN)
+      }
       try {
         const pagesArray = await Pages.find({})
         if (!pagesArray) {
-          throw new Error(`No pages present`)
+          throw new Error(ERRORS.NO_PAGES_IN_DATABASE)
         }
         return pagesArray
       } catch (error) {
         throw error
       }
     },
-    singlePage: async (_:any, { slug }: any) => {
+    singlePage: async (parent:any, { slug }: any) => {
       try {
         const existingPage = await Pages.findOne({ slug: slug })
         if (existingPage) {
           return existingPage
         }
-        throw new Error(`Page with ${slug} not found`)
+        throw new Error(ERRORS.PAGE_NOT_FOUND)
       } catch (error) {
         throw error
       }
     },
-    singleUser: async (_:any, { email, password }:any) => {
+    singleUser: async (parent:any, { email, password }: any) => {
       try {
         const user = await Users.findOne({ email: email })
         if (!user) {
-          throw new Error(`No user present for email: ${email}`)
+          throw new Error(ERRORS.USER_NOT_FOUND)
         }
         if (user.password !== password) {
-          throw new Error(`Password email combination not correct: ${user.password}. payload: ${email} ${password}`)
+          throw new Error(ERRORS.PASSWORD_NO_MATCH)
         }
         return user
       } catch (error) {
@@ -40,7 +44,7 @@ export const resolvers = {
     }
   },
   Mutation: {
-    createPage: async (_:any, { page }:any) => {
+    createPage: async (parent:any, { page }:any) => {
       try {
         const newPage = new Pages({
           ...page
@@ -57,14 +61,14 @@ export const resolvers = {
         throw error
       }
     },
-    createUser: async (_:any, { user }:any) => {
+    createUser: async (parent:any, { user }:any) => {
       try {
         const newUser = new Users({
           ...user
         })
         const existingUser = await Users.findOne({ email: user.email })
         if (existingUser) {
-          throw new Error(`User with email: ${user.email} already exists not found`)
+          throw new Error(ERRORS.USER_ALREADY_EXISTS)
         }
         await newUser.save()
         return newUser
@@ -72,22 +76,22 @@ export const resolvers = {
         throw error
       }
     },
-    deletePage: async (_:any, { id }:any) => {
+    deletePage: async (parent:any, { id }:any) => {
       try {
         const deletedPage = await Pages.findOneAndDelete({ id: id })
         if (!deletedPage) {
-          throw new Error(`Page with ${id} not found`)
+          throw new Error(ERRORS.PAGE_NOT_FOUND)
         }
         return deletedPage
       } catch (error) {
         throw error
       }
     },
-    deleteUser: async (_:any, { id }:any) => {
+    deleteUser: async (parent:any, { id }:any) => {
       try {
         const deletedUser = await Pages.findOneAndDelete({ id: id })
         if (!deletedUser) {
-          throw new Error(`User with ${id} not found`)
+          throw new Error(ERRORS.USER_NOT_FOUND)
         }
         return deletedUser
       } catch (error) {

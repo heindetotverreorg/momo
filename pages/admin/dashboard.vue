@@ -1,5 +1,4 @@
 <template>
-  {{ session }}
   <div>
     <button @click="createPageTesting('1')">Click me to create a first level page</button>
     <button @click="createPageTesting('2')">Click me to create a second level page</button>
@@ -12,6 +11,8 @@
     </div>
     <p>{{ pages }}</p>
   </div>
+  <NuxtLink to="/1stlevel">go to page via nuxtlink</NuxtLink>
+  <a href="/1stlevel">go to page via href</a>
 </template>
 <script setup lang="ts">
 import { usePages } from '~~/composables/usePages'
@@ -20,8 +21,6 @@ import { usePages } from '~~/composables/usePages'
     layout: 'admin',
     middleware: ["auth"]
   });
-
-  const session = useState('session')
 
   const normalPage = {
     name: 'name',
@@ -67,7 +66,7 @@ import { usePages } from '~~/composables/usePages'
 
   const { createPage, deletePage, fetchPages, pages } = usePages()
   await fetchPages()
-
+  
   const id = ref('')
 
   const createPageTesting = (level : String) => {

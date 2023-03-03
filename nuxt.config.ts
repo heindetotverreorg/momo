@@ -12,8 +12,14 @@ export default defineNuxtConfig({
   apollo: {
     clients: {
       default: {
+        httpLinkOptions: {
+          credentials: 'same-origin'
+        },
+        authType: 'Bearer',
+        authHeader: 'Authorization',
         httpEndpoint: "http://localhost:3000/gql",
-        tokenStorage: "localStorage"
+        tokenName: 'momo:token',
+        tokenStorage: "cookie"
       }
     },
   },

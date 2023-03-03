@@ -2,6 +2,8 @@
   <FactoriesPage
     :page="page"
   />
+  <NuxtLink to="/admin/dashboard">go to dashboard via nuxtlink</NuxtLink>
+  <a href="/admin/dashboard">go to dashboard via href</a>
 </template>
 <script setup lang="ts">
 import { usePages } from '~~/composables/usePages'

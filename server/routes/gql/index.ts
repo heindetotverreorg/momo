@@ -8,6 +8,9 @@ const apollo = new ApolloServer({
   resolvers
 })
 
-console.log('Graph QL server fired up')
-
-export default startServerAndCreateH3Handler(apollo)
+export default startServerAndCreateH3Handler(apollo, {
+  context: async ({event}) => {
+    const cookies = parseCookies(event)
+    return { token: cookies?.['momo:token'] };
+  },
+})

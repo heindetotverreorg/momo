@@ -5,6 +5,7 @@
   <p>{{ error.message }}</p>
 </template>
 <script lang="ts" setup>
+
   const props = defineProps({
     error: {
       type: Object,
