@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = await createToken(user)
-  setCookie(event, 'momo:token', token, { httpOnly: true })
+  setCookie(event, 'momo:token', token, { httpOnly: true, secure: true, sameSite: true })
 
   return {
     authenticated: true
