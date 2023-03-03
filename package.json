@@ -9,7 +9,6 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "prestart": "nuxt build",
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
