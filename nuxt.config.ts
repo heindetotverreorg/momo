@@ -1,5 +1,3 @@
-console.log(process.env.GQL_SERVER)
-
 export default defineNuxtConfig({
   runtimeConfig: {
     secret: process.env.TOKEN_SECRET,
