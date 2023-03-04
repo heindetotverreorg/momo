@@ -12,9 +12,12 @@ export default defineNuxtConfig({
   apollo: {
     clients: {
       default: {
-        httpLinkOptions: {
-          credentials: 'same-origin'
-        },
+        // httpLinkOptions: {
+        //   fetchOptions: {
+        //     mode: 'cors'
+        //   },
+        //   credentials: 'same-origin'
+        // },
         authType: 'Bearer',
         authHeader: 'Authorization',
         httpEndpoint: process.env.GQL_SERVER || 'http://localhost:3000/gql',
