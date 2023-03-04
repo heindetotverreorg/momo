@@ -12,6 +12,6 @@ export default defineNuxtConfig({
         tokenName: 'momo:token',
         tokenStorage: 'cookie'
       }
-    },
-  },
+    }
+  }
 })
