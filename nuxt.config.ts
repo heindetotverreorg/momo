@@ -12,17 +12,11 @@ export default defineNuxtConfig({
   apollo: {
     clients: {
       default: {
-        // httpLinkOptions: {
-        //   fetchOptions: {
-        //     mode: 'cors'
-        //   },
-        //   credentials: 'same-origin'
-        // },
         authType: 'Bearer',
         authHeader: 'Authorization',
         httpEndpoint: process.env.GQL_SERVER || 'http://localhost:3000/gql',
         tokenName: 'momo:token',
-        tokenStorage: "cookie"
+        tokenStorage: 'cookie'
       }
     },
   },
