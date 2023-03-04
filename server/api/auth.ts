@@ -4,6 +4,7 @@ import * as jose from 'jose'
 import { User } from '~~/types/users'
 
 const connectionString = process.env.MONGO_URL as string
+const tokenSecret = process.env.TOKEN_SECRET
 
 export default defineEventHandler(async (event) => {
   await connect(connectionString)
@@ -20,7 +21,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = await createToken(user)
-  setCookie(event, 'momo:token', token, { httpOnly: true, secure: true, sameSite: true })
+  setCookie(event, 'momo:token', token)
 
   return {
     authenticated: true
@@ -38,7 +39,7 @@ const connect = async (connectionString : string) => {
 
 const createToken = async (user : User) => {
   const alg = 'HS256'
-  const secret = new TextEncoder().encode(process.env.TOKEN_SECRET)
+  const secret = new TextEncoder().encode(tokenSecret)
   
   return await new jose.SignJWT({ user: user?.id, role: user?.role })
     .setProtectedHeader({ alg })

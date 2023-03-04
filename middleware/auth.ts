@@ -12,7 +12,7 @@ const verifyToken = async (token : Ref) => {
     await jose.jwtVerify(token.value, secret)
   } catch (error : any) {
     if (error.reason === 'check_failed') {
-      // token.value = null
+      token.value = null
     }
   }
 }
