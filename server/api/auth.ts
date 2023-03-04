@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
   setCookie(event, 'momo:token', token, { httpOnly: true, secure: true, sameSite: true })
 
   return {
-    authenticated: true
+    authenticated: 'test: ' + token
   }
 })
 
