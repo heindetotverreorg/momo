@@ -21,7 +21,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const token = await createToken(user)
-  setCookie(event, 'momo:token', token)
+  // todo: set secure when certs is set on prod -> https
+  setCookie(event, 'momo:token', token, { httpOnly: true, sameSite: true })
 
   return {
     authenticated: true
