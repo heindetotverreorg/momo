@@ -6,24 +6,30 @@ import { User } from '~~/types/users'
 const connectionString = process.env.MONGO_URL as string
 
 export default defineEventHandler(async (event) => {
-  await connect(connectionString)
-  const { email, password } = await readBody(event)
-  const Users = mongoose.model('Users', UserSchema)
-  const user = await Users.findOne({ email: email }) as User
-
-  if (!email || !password) {
-    throw new Error(`No email or password sent`)
-  }
-
-  if (user?.password !== password) {
-    throw new Error(`Password email combination not correct`)
-  }
-
-  const token = await createToken(user)
-  setCookie(event, 'momo:token', token, { httpOnly: true, secure: true, sameSite: true })
-
-  return {
-    authenticated: 'test: ' + token
+  try {
+    await connect(connectionString)
+    const { email, password } = await readBody(event)
+    const Users = mongoose.model('Users', UserSchema)
+    const user = await Users.findOne({ email: email }) as User
+  
+    if (!email || !password) {
+      throw new Error(`No email or password sent`)
+    }
+  
+    if (user?.password !== password) {
+      throw new Error(`Password email combination not correct`)
+    }
+  
+    const token = await createToken(user)
+    setCookie(event, 'momo:token', token, { httpOnly: true, secure: true, sameSite: true })
+  
+    return {
+      authenticated: 'test: ' + token
+    }
+  } catch (error : any) {
+    return {
+      authenticated: error.message
+    }
   }
 })
 

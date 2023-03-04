@@ -6,7 +6,7 @@ const { createUser } = useUsers()
 export const useAuth = () => {
   const login = async (formValues : Record<string, any>) => {
     try {
-      const { data, error } : { data : Ref<{authenticated: string} | null>, error : any } = await useFetch('/api/auth', {
+      const { data, error } : { data : Ref<{authenticated: boolean} | null>, error : any } = await useFetch('/api/auth', {
         body: formValues,
         method: 'post'
       })
