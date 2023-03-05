@@ -9,5 +9,4 @@ jobs:
       - run: echo 'run e2e tests'
       - run: echo 'run lighthouse test'
       - run: echo 'publish'
-      - run: git push dokku master
       - run: echo 'this job's status is ${{ job.status }}'
