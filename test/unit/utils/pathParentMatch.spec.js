@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest"
-import { pathParentMatch } from '../../../utils/pathParentMatch'
+import { pathParentMatch } from '~~/utils/pathParentMatch'
 
 describe('pathParentMatch: test/unit/test/pathParentMatch.ts', () => {
   it('should return false if page is root and has parent', () => {

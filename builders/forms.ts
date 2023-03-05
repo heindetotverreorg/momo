@@ -1,14 +1,15 @@
-import { Form } from "mesh-ui-components"
+import { Form, validators } from "mesh-ui-components"
 import { FORM_NAMES } from "~~/constants/forms"
 import { createSafeId } from "~~/utils/createSafeId"
-import {
+
+const {
   nonumber,
   email,
   notempty,
   specialchar,
   minlength,
   issamevalue
-} from '~~/utils/validators'
+} = validators
 
 const elements = {
   text: {
