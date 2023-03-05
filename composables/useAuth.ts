@@ -1,5 +1,4 @@
 import { useUsers } from '~~/composables/useUsers'
-import { useState } from '#app'
 
 const { createUser } = useUsers()
 

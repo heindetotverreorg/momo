@@ -2,6 +2,7 @@ import { ERRORS } from '~~/constants/errors'
 import { createPageMutation, deletePageMutation, fetchPagesQuery, fetchSinglePageQuery } from '~~/server/gql/queries/pages'
 import { Page } from '~~/types/pages'
 import { handleError } from '~~/utils/handleError'
+import { pathParentMatch } from '~~/utils/pathParentMatch'
 
 export const usePages = () => {
   const state = reactive({
@@ -49,7 +50,10 @@ export const usePages = () => {
   }
 
   const fetchPages = async () => {
-    const { data, error } = await useAsyncQuery<{ pages: Page[] }>(fetchPagesQuery, { admin: true })
+    const variables = {
+      admin: true, fetchPolicy: "no-cache" 
+    }
+    const { data, error } = await useAsyncQuery<{ pages: Page[] }>(fetchPagesQuery, variables)
     if (error.value) {
       await handleError(error.value)
     }
@@ -84,26 +88,4 @@ export const usePages = () => {
 
 const isValidPath = (pathArr : String[], page : Page | undefined) : Boolean => {
   return page ? pathParentMatch(pathArr, page) : false
-}
-
-const pathParentMatch = (pathArr : String[], page : Page) => {
-  // check if path compares to the pages parents array
-  const isRootPath = pathArr.length === 1
-  let pathMatch : Boolean = true
-  pathArr.forEach((path, index) => {
-    // page has invalid parents compared to path so we can stop comparing
-    if (!pathMatch) return
-    // page is root and has no parent so is valid
-    if (isRootPath) {
-      return pathMatch = !page.parent.length
-    } else {
-      // page is not root so page needs parent
-      if (!page.parent[index]) return
-      // page is not root so path levels should match page parents
-      if (path !== page.parent[index]) return pathMatch = false
-    }
-    // all condition ok
-    pathMatch = true
-  }) 
-  return pathMatch
 }
