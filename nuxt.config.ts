@@ -1,6 +1,7 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/apollo',
+    '@pinia/nuxt',
     './modules/mesh-ui-components'
   ],
   apollo: {

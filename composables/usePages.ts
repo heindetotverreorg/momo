@@ -3,11 +3,12 @@ import { createPageMutation, deletePageMutation, fetchPagesQuery, fetchSinglePag
 import { Page } from '~~/types/pages'
 import { handleError } from '~~/utils/handleError'
 import { pathParentMatch } from '~~/utils/pathParentMatch'
+import { usePagesStore } from '~~/store/pages'
+import { storeToRefs } from 'pinia'
 
 export const usePages = () => {
-  const state = reactive({
-    pages: [] as Page[]
-  })
+  const { addPage, removePage, replacePages } = usePagesStore()
+  const { pages } = storeToRefs(usePagesStore())
 
   const createPage = async (page: Page) => {
     const variables = {
@@ -18,14 +19,7 @@ export const usePages = () => {
       const result = await createPage()
       if (result?.data) {
         const { data } = result
-        const duplicateIndex = state.pages.findIndex(page => {
-          return page.id === data.createPage.id
-        })
-        if (duplicateIndex >= 0) {
-          state.pages[duplicateIndex] = data.createPage
-        } else {
-          state.pages.push(data.createPage)
-        }
+        addPage(data.createPage)
       }
     } catch (error) {
       return error
@@ -41,8 +35,7 @@ export const usePages = () => {
       const result = await deletePage()
       if (result?.data) {
         const { data } = result
-        const newPagesArray = state.pages.filter(page => page.id !== data.deletePage.id)
-        state.pages = newPagesArray
+        removePage(data.deletePage)
       }
     } catch (error) {
       return error
@@ -58,9 +51,9 @@ export const usePages = () => {
       await handleError(error.value)
     }
     if(data.value?.pages) {
-      state.pages = data.value.pages
+      replacePages(data.value.pages)
     }
-    return state.pages
+    return pages
   }
 
   const fetchSinglePage = async (slug : String, pathArr : String[], fullPath : String) => {
@@ -82,7 +75,7 @@ export const usePages = () => {
     deletePage,
     fetchPages,
     fetchSinglePage,
-    pages: computed(() => state.pages as [Page])
+    pages: pages
   }
 }
 

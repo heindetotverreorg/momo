@@ -22,9 +22,11 @@
     "@apollo/server": "^4.3.3",
     "@as-integrations/h3": "^1.1.5",
     "@nuxtjs/apollo": "^5.0.0-alpha.5",
+    "@pinia/nuxt": "^0.4.7",
     "graphql": "^16.6.0",
     "jose": "^4.13.0",
-    "mongoose": "^6.9.1"
+    "mongoose": "^6.9.1",
+    "pinia": "^2.0.33"
   },
   "license": "ISC",
   "engines": {

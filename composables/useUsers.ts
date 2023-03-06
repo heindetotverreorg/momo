@@ -2,8 +2,13 @@ import { createUserMutation, fetchSingleUserQuery } from '~~/server/gql/queries/
 import { createSafeId } from "~~/utils/createSafeId"
 import { useAuth } from '~~/composables/useAuth'
 import { User } from '~~/types/users'
+import { useUserStore } from '~~/store/users'
+import { storeToRefs } from 'pinia'
 
 export const useUsers = () => {
+  const { setUser } = useUserStore()
+  const { user } = storeToRefs(useUserStore())
+  
   const createUser = async (formValues : Record<string, any>) => {
     delete formValues.passwordCheck
     const variables = {
@@ -16,7 +21,8 @@ export const useUsers = () => {
     try {
       const { mutate: createUser } = useMutation(createUserMutation, { variables })
       const result = await createUser()
-      if (result?.data) {
+      if (result?.data?.singleUser) {
+        setUser(result.data.singleUser)
         const { login } = useAuth()
         return await login({ email: formValues.email, password: formValues.password })
       }
@@ -26,14 +32,16 @@ export const useUsers = () => {
     }
   }
 
-  const getSingleUser = async (formValues : Record<string, any>) => {
-    const variables = {
-      email: formValues.email,
-      password: formValues.password
-    }
+  const fetchSingleUser = async () => {
     try {
-      const { result } = await useQuery<{ user: User }>(fetchSingleUserQuery, variables)
-      return result?.value?.user
+      const { data, error } = await useAsyncQuery<{ singleUser: User }>(fetchSingleUserQuery)
+      if (error.value) {
+        await handleError(error.value)
+      }
+      if (data.value?.singleUser) {
+        setUser(data.value.singleUser)
+        return user
+      }
     } catch (error) {
       return error
     }
@@ -41,6 +49,7 @@ export const useUsers = () => {
 
   return {
     createUser,
-    getSingleUser
+    fetchSingleUser,
+    user
   }
 }

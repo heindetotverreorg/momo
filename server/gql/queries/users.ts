@@ -1,5 +1,3 @@
-import gql from "graphql-tag"
-
 export const createUserMutation = gql`
   mutation createUser ($user: UserInput!) {
     createUser (user: $user) {
@@ -17,8 +15,8 @@ export const deleteUserMutation = gql`
 `
 
 export const fetchSingleUserQuery = gql`
-  query fetchSingleUser ($email: String!, $password: String!) {
-    singleUser (email: $email, password: $password) {
+  query fetchSingleUser {
+    singleUser {
       id
       firstName
       lastName

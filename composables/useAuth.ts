@@ -1,8 +1,8 @@
 import { useUsers } from '~~/composables/useUsers'
 
-const { createUser } = useUsers()
-
 export const useAuth = () => {
+  const { createUser } = useUsers()
+  
   const login = async (formValues : Record<string, any>) => {
     try {
       const { data, error } : { data : Ref<{authenticated: boolean} | null>, error : any } = await useFetch('/api/auth', {

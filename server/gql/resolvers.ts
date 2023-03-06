@@ -1,9 +1,15 @@
 import { Pages, Users } from '~~/server/mongo/mongoConnect'
 import { ERRORS } from '~~/constants/errors';
+import * as jose from 'jose'
+
+const decodeToken = async (token : string) => {
+  const { user } = jose.decodeJwt(token)
+  return user
+}
 
 export const resolvers = {
   Query: {
-    pages: async (parent:any, { admin }:any,context:any) => {
+    pages: async (parent : any, { admin } : any,context : any) => {
       if (admin && !context.token) {
         throw new Error(ERRORS.NOT_AUTHENTICATED_FOR_ADMIN)
       }
@@ -17,7 +23,7 @@ export const resolvers = {
         throw error
       }
     },
-    singlePage: async (parent:any, { slug }: any) => {
+    singlePage: async (parent : any, { slug } : any) => {
       try {
         const existingPage = await Pages.findOne({ slug: slug })
         if (existingPage) {
@@ -28,14 +34,15 @@ export const resolvers = {
         throw error
       }
     },
-    singleUser: async (parent:any, { email, password }: any) => {
+    singleUser: async (parent : any, variables : any, context : any) => {
+      if (!context.token) {
+        throw new Error(ERRORS.NOT_AUTHENTICATED_FOR_ADMIN)
+      }
+      const id = await decodeToken(context.token)
       try {
-        const user = await Users.findOne({ email: email })
+        const user = await Users.findOne({ id: id })
         if (!user) {
           throw new Error(ERRORS.USER_NOT_FOUND)
-        }
-        if (user.password !== password) {
-          throw new Error(ERRORS.PASSWORD_NO_MATCH)
         }
         return user
       } catch (error) {
@@ -44,7 +51,7 @@ export const resolvers = {
     }
   },
   Mutation: {
-    createPage: async (parent:any, { page }:any) => {
+    createPage: async (parent : any, { page } : any) => {
       try {
         const newPage = new Pages({
           ...page
@@ -61,7 +68,7 @@ export const resolvers = {
         throw error
       }
     },
-    createUser: async (parent:any, { user }:any) => {
+    createUser: async (parent : any, { user } : any) => {
       try {
         const newUser = new Users({
           ...user
@@ -76,7 +83,7 @@ export const resolvers = {
         throw error
       }
     },
-    deletePage: async (parent:any, { id }:any) => {
+    deletePage: async (parent : any, { id } : any) => {
       try {
         const deletedPage = await Pages.findOneAndDelete({ id: id })
         if (!deletedPage) {
@@ -87,7 +94,7 @@ export const resolvers = {
         throw error
       }
     },
-    deleteUser: async (parent:any, { id }:any) => {
+    deleteUser: async (parent : any, { id } : any) => {
       try {
         const deletedUser = await Pages.findOneAndDelete({ id: id })
         if (!deletedUser) {

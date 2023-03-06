@@ -50,7 +50,7 @@ export const typeDefs =  `#graphql
   type Query {
     pages(admin: Boolean): [Page]
     singlePage(slug: String): Page
-    singleUser(email: String, password: String): User
+    singleUser: User
   }
 
   type Mutation {
