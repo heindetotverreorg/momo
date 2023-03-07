@@ -1,15 +1,15 @@
 interface Page {
-  name: String
-  slug: String
+  name: string
+  slug: string
   isInMenu: Boolean
-  parent: String[]
+  parent: string[]
   menuOrder: number
-  title: String
-  description: String
-  keywords: String
-  contentComponents: String[]
-  id: String
-  author: String
+  title: string
+  description: string
+  keywords: string
+  contentComponents: string[]
+  id: string
+  author: string
 }
 
 export {

@@ -1,15 +1,17 @@
 <template>
   <div>
-    <p>{{ pages }}</p>
-    <div v-if="pages.length">
-      <button @click="deletePage(id)">
+    <p
+      v-for="page of pages"
+      :key="page.id"
+    >
+      {{ page }}
+      <button @click="deletePage(page.id)">
         Click me to to delete a page
       </button>
-      <button @click="goToCreatePage(id)">
+      <button @click="goToCreatePage(page.id)">
         Click me to to edit a page
       </button>
-      <input type="text" placeholder="type id to interact with" v-model="id" />
-    </div>
+    </p>
     <button @click="goToCreatePage()">
       Click me to to create a page
     </button>

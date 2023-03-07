@@ -1,5 +1,5 @@
 <template>
-  <AdminSectionsPage />
+  <AdminSectionsPages />
   <AdminSectionsUser />
   <AdminSectionsContent />
   <AdminSectionsTheme />
