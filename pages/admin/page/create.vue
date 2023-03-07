@@ -1,73 +1,60 @@
 <template>
   <div>
-    <button @click="createPageTesting('1')">Click me to create a first level page</button>
-    <button @click="createPageTesting('2')">Click me to create a second level page</button>
-    <button @click="createPageTesting('3')">Click me to create a third level page</button>
+    <MeshFormWrapper
+      :content="getScopedContent"
+      :form="formData[FORM_NAMES.CREATE_PAGE]"
+      :formValues="formValues"
+      @submit="onSubmit($event)"
+    />
   </div>
+  <p>{{ response }}</p>
 </template>
 <script setup lang="ts">
 import { usePages } from '~~/composables/usePages'
+import { formData } from '~~/builders/forms'
+import { useContent } from '~~/composables/useContent'
+import { useUsers } from '~~/composables/useUsers'
+import { MeshFormWrapper } from 'mesh-ui-components'
+import { FORM_NAMES } from '~~/constants/forms';
+import { createSafeId } from "~~/utils/createSafeId"
 
   definePageMeta({
     layout: 'admin',
     middleware: ['auth']
   });
 
-  const normalPage = {
-    name: 'name',
-    slug: '1stlevel',
-    isInMenu: false,
-    parent: [],
-    menuOrder: 0,
-    title: 'title',
-    description: 'description',
-    keywords: 'keywords',
-    contentComponents: [],
-    id: 'id1',
-    author: 'author'
-  }
+  const { query } = useRoute()
+  const { createPage, fetchPages, pages } = usePages()
+  const { fetchSingleUser, user } = useUsers()
+  const { getScopedContent } = useContent('global.forms')
 
-  const pageOneLevenDeep = {
-    name: 'name',
-    slug: '2ndlevel',
-    isInMenu: false,
-    parent: ['1stlevel'],
-    menuOrder: 0,
-    title: 'title',
-    description: 'description',
-    keywords: 'keywords',
-    contentComponents: [],
-    id: 'id2',
-    author: 'author'
-  }
+  const formValues = ref({}) as Record<string, any>
+  const response = ref()
 
-  const pageTwoLevenDeep = {
-    name: 'name',
-    slug: '3rdlevel',
-    isInMenu: false,
-    parent: ['1stlevel', '2ndlevel'],
-    menuOrder: 0,
-    title: 'title',
-    description: 'description',
-    keywords: 'keywords',
-    contentComponents: [],
-    id: 'id2',
-    author: 'author'
-  }
+  await Promise.all([fetchSingleUser, fetchPages])
+  setPageFromQuery()
 
-  const { createPage, pages } = usePages()
-
-  const createPageTesting = (level : String) => {
-    if (level === '1') {
-      createPage(normalPage)
+  const onSubmit = async (form : Record<string, any>) => {
+    const page = {
+      id: `${form.formValues.name}_${createSafeId()}`,
+      parent: [],
+      menuOrder: 0,
+      title: form.formValues.name,
+      description: 'description',
+      keywords: 'keywords',
+      contentComponents: [],
+      author: user.value?.id,
+      ...form.formValues
     }
+    response.value = await createPage(page)
+  }
 
-    if (level === '2') {
-      createPage(pageOneLevenDeep)
-    }
-
-    if (level === '3') {
-      createPage(pageTwoLevenDeep)
+  function setPageFromQuery() {
+    if (query) {
+      const page = pages.value.find(p => p.id === query.id)
+      formValues.value = page
     }
   }
+
+
 </script>

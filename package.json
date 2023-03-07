@@ -5,6 +5,7 @@
   "scripts": {
     "mongo": "mongod --dbpath ./server/mongo/db",
     "build": "nuxt build",
+    "analyze": "nuxt build --analyze",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

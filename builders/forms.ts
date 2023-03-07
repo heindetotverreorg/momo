@@ -8,7 +8,8 @@ const {
   notempty,
   specialchar,
   minlength,
-  issamevalue
+  issamevalue,
+  slug
 } = validators
 
 const elements = {
@@ -25,6 +26,12 @@ const elements = {
     id: createSafeId(),
     validators: [() => true],
     variant: 'primary'
+  },
+  checkbox: {
+    component: 'MeshInput',
+    type: 'checkbox',
+    id: createSafeId(),
+    validators: [() => true]
   }
 }
 
@@ -93,6 +100,32 @@ const formData = {
       {
         ...elements.button,
         key: 'registerButton'
+      }
+    ]
+  } as Form,
+  [FORM_NAMES.CREATE_PAGE]: {
+    meta: {
+      name: FORM_NAMES.CREATE_PAGE,
+      multipart: true
+    },
+    fields: [
+      {
+        ...elements.text,
+        key: 'slug',
+        validators: [slug]
+      },
+      {
+        ...elements.text,
+        key: 'name',
+        validators: [notempty]
+      },
+      {
+        ...elements.checkbox,
+        key: 'isInMenu'
+      },
+      {
+        ...elements.button,
+        key: 'createPageButton'
       }
     ]
   } as Form

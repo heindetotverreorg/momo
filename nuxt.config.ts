@@ -11,7 +11,10 @@ export default defineNuxtConfig({
         authHeader: 'Authorization',
         httpEndpoint: process.env.GQL_SERVER as string,
         tokenName: 'momo:token',
-        tokenStorage: 'cookie'
+        tokenStorage: 'cookie',
+        inMemoryCacheOptions: {
+          addTypename: false
+        }
       }
     }
   }

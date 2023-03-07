@@ -3,6 +3,7 @@ import { createPageMutation, deletePageMutation, fetchPagesQuery, fetchSinglePag
 import { Page } from '~~/types/pages'
 import { handleError } from '~~/utils/handleError'
 import { pathParentMatch } from '~~/utils/pathParentMatch'
+import { formData } from '~~/builders/forms'
 import { usePagesStore } from '~~/store/pages'
 import { storeToRefs } from 'pinia'
 
@@ -35,7 +36,7 @@ export const usePages = () => {
       const result = await deletePage()
       if (result?.data) {
         const { data } = result
-        removePage(data.deletePage)
+        removePage(data.deletePage.id)
       }
     } catch (error) {
       return error

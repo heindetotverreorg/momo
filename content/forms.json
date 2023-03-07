@@ -9,8 +9,12 @@
             "passwordCheck": "Password again",
             "firstName": "First name",
             "lastName": "Last name",
+            "slug": "Enter a unique slug",
+            "name": "Enter a name for your page",
+            "isInMenu": "Visible in the menu",
             "loginButton": "Login",
-            "registerButton": "Register"
+            "registerButton": "Register",
+            "createPageButton": "Create page"
           },
           "validators": {
             "email": "is not an email",
@@ -18,6 +22,7 @@
             "notempty": "is required",
             "minlength": "should be minimal 8 characters",
             "specialchar": "should have at least 1 special character",
+            "slug": "should start with /",
             "default": "default"
           },
           "messages": {
@@ -37,6 +42,9 @@
             "goToRegister": "Go to register"
           },
           "validation": "Er is een fout geconstateerd in de volgende velden: "
+        },
+        "createPage": {
+          "title": "Create a page"
         }
       }
     }
