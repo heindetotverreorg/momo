@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { formData } from '~~/builders/forms'
+import { formsModel } from '~~/models/forms'
 import { useAuth } from '~~/composables/useAuth'
 import { usePath } from '~~/composables/usePath'
 import { useContent } from '~~/composables/useContent'
@@ -36,7 +36,7 @@ import { MeshButton, MeshFormWrapper } from 'mesh-ui-components'
   const formValues = ref({}) as Record<string, any>
   const response = ref() 
 
-  const currentForm = computed(() => authMethod.value === FORM_NAMES.LOGIN ? formData.login : formData.register)
+  const currentForm = computed(() => authMethod.value === FORM_NAMES.LOGIN ? formsModel.login : formsModel.register)
 
   const onSubmit = async (form : Record<string, any>) => {
     if (authMethod.value === FORM_NAMES.LOGIN) {

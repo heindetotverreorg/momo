@@ -1,8 +1,8 @@
 import contentJson from "~~/content/forms.json"
 import { findNestedKeyInObject } from "~~/utils/findNestedKeyInObject"
 
-export const useContent = (scopedPath : string = '', customContent : Record<string, any> | void) => {
-  const content = customContent || contentJson.momo.en
+export const useContent = () => {
+  const content = contentJson.momo.en
 
   const getContent = (contentPath : string) => {
     const splitPath = contentPath.split('.')
@@ -10,7 +10,11 @@ export const useContent = (scopedPath : string = '', customContent : Record<stri
   }
 
   const getScopedContent = (scope : string, contentKey : string) => {
-    const fullContentPath = scopedPath.concat(`.${scope}.${contentKey}`)
+    if (scope === 'validators') {
+      console.log(scope, contentKey)
+    }
+
+    const fullContentPath = `${scope}.${contentKey}`
     const splitPath = fullContentPath.split('.')
     return findNestedKeyInObject(splitPath, content)
   }

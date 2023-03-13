@@ -9,12 +9,8 @@
             "passwordCheck": "Password again",
             "firstName": "First name",
             "lastName": "Last name",
-            "slug": "Enter a unique slug",
-            "name": "Enter a name for your page",
-            "isInMenu": "Visible in the menu",
             "loginButton": "Login",
-            "registerButton": "Register",
-            "createPageButton": "Create page"
+            "registerButton": "Register"
           },
           "validators": {
             "email": "is not an email",
@@ -44,7 +40,19 @@
           "validation": "Er is een fout geconstateerd in de volgende velden: "
         },
         "createPage": {
-          "title": "Create a page"
+          "title": "Create a page",
+          "form": {
+            "labels": {
+              "slug": "Enter a unique slug",
+              "name": "Enter a name for your page",
+              "isInMenu": "Visible in the menu",
+              "menuParent": "Pick a parent for you page",
+              "title": "Title of the page",
+              "description": "Add a description for your page",
+              "keywords": "Add keywords on your pages subject",
+              "createPageButton": "Create page"
+            }
+          }
         }
       }
     }

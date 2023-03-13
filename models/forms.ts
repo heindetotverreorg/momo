@@ -17,29 +17,26 @@ const elements = {
     component: 'MeshInput',
     type: 'text',
     id: createSafeId(),
-    validators: [() => true],
     highlightValidation: true
   },
   button: {
     component: 'MeshButton',
     type: 'button',
     id: createSafeId(),
-    validators: [() => true],
     variant: 'primary'
   },
   checkbox: {
     component: 'MeshInput',
     type: 'checkbox',
     id: createSafeId(),
-    validators: [() => true]
+    validators: [{ name: '', validate: () => true }]
   }
 }
 
-const formData = {
+const formsModel = {
   [FORM_NAMES.LOGIN]: {
     meta: {
-      name: FORM_NAMES.LOGIN,
-      multipart: false
+      name: FORM_NAMES.LOGIN
     },
     fields: [
       {
@@ -64,8 +61,7 @@ const formData = {
   } as Form,
   [FORM_NAMES.REGISTER]: {
     meta: {
-      name: FORM_NAMES.REGISTER,
-      multipart: false
+      name: FORM_NAMES.REGISTER
     },
     fields: [
       {
@@ -106,22 +102,45 @@ const formData = {
   [FORM_NAMES.CREATE_PAGE]: {
     meta: {
       name: FORM_NAMES.CREATE_PAGE,
-      multipart: true
+      sections: ['general', 'meta', 'content']
     },
     fields: [
       {
+        section: 'general',
         ...elements.text,
         key: 'slug',
         validators: [slug]
       },
       {
+        section: 'general',
         ...elements.text,
         key: 'name',
         validators: [notempty]
       },
       {
+        section: 'general',
         ...elements.checkbox,
         key: 'isInMenu'
+      },
+      {
+        section: 'general',
+        ...elements.text,
+        key: 'menuParent'
+      },
+      {
+        section: 'meta',
+        ...elements.text,
+        key: 'title'
+      },
+      {
+        section: 'meta',
+        ...elements.text,
+        key: 'description'
+      },
+      {
+        section: 'meta',
+        ...elements.text,
+        key: 'keywords'
       },
       {
         ...elements.button,
@@ -132,5 +151,5 @@ const formData = {
 }
 
 export {
-  formData
+  formsModel
 }
