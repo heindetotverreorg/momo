@@ -5,9 +5,7 @@ export const usePagesStore = defineStore('pagesStore', () => {
   const pages = ref<Page[]>([])
 
   const addPage = (fetchedPage : Page) => {
-    const duplicateIndex = pages.value.findIndex(page => {
-      return page.id === fetchedPage.id
-    })
+    const duplicateIndex = pages.value.findIndex(page => page.id === fetchedPage.id)
     if (duplicateIndex >= 0) {
       pages.value[duplicateIndex] = fetchedPage
     } else {

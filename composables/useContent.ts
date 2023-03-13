@@ -1,7 +1,7 @@
 import contentJson from "~~/content/forms.json"
 import { findNestedKeyInObject } from "~~/utils/findNestedKeyInObject"
 
-export const useContent = () => {
+export const useContent = (predefinedScope? : string) => {
   const content = contentJson.momo.en
 
   const getContent = (contentPath : string) => {
@@ -10,11 +10,7 @@ export const useContent = () => {
   }
 
   const getScopedContent = (scope : string, contentKey : string) => {
-    if (scope === 'validators') {
-      console.log(scope, contentKey)
-    }
-
-    const fullContentPath = `${scope}.${contentKey}`
+    const fullContentPath = predefinedScope ? `${predefinedScope}.${scope}.${contentKey}` : `${scope}.${contentKey}`
     const splitPath = fullContentPath.split('.')
     return findNestedKeyInObject(splitPath, content)
   }

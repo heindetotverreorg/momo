@@ -21,6 +21,7 @@
             :highlight-validation="field.highlightValidation"
             :label="getScopedContent('admin.createPage.form.labels', field.key)"
             :name="field.key"
+            :options="getPagesTitles(field.key)"
             :required="field.required"
             :second-validation-value="getSecondValdiationValue(field.secondValidationValue)"
             :type="field.type"
@@ -76,10 +77,16 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
   const formValues = ref({}) as Record<string, any>
   const response = ref()
 
-  await Promise.all([fetchSingleUser, fetchPages])
+  await Promise.all([fetchSingleUser(), fetchPages()])
   setPageFromQuery()
 
   const { form } = multiPartForm(formsModel[FORM_NAMES.CREATE_PAGE])
+
+  const getPagesTitles = (key : string) => {
+    if (key === 'menuParent') {
+      return pages.value.map(page => page.title)
+    }
+  }
 
   const onSubmit = async (form : Record<string, any>) => {
     const page = {
@@ -97,7 +104,7 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
   }
 
   function setPageFromQuery() {
-    if (query) {
+    if (query.id) {
       const page = pages.value.find(p => p.id === query.id)
       formValues.value = page
     }

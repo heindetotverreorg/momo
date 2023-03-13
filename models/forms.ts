@@ -16,20 +16,22 @@ const elements = {
   text: {
     component: 'MeshInput',
     type: 'text',
-    id: createSafeId(),
     highlightValidation: true
   },
   button: {
     component: 'MeshButton',
     type: 'button',
-    id: createSafeId(),
     variant: 'primary'
   },
   checkbox: {
     component: 'MeshInput',
     type: 'checkbox',
-    id: createSafeId(),
-    validators: [{ name: '', validate: () => true }]
+    validators: [{ name: 'checkbox', validate: () => true }]
+  },
+  select: {
+    component: 'MeshSelect',
+    type: 'select',
+    validators: [{ name: 'select', validate: () => true }]
   }
 }
 
@@ -120,27 +122,32 @@ const formsModel = {
       {
         section: 'general',
         ...elements.checkbox,
-        key: 'isInMenu'
+        key: 'isInMenu',
+        required: false
       },
       {
         section: 'general',
-        ...elements.text,
-        key: 'menuParent'
+        ...elements.select,
+        key: 'menuParent',
+        required: false
       },
       {
         section: 'meta',
         ...elements.text,
-        key: 'title'
+        key: 'title',
+        validators: [notempty]
       },
       {
         section: 'meta',
         ...elements.text,
-        key: 'description'
+        key: 'description',
+        validators: [notempty]
       },
       {
         section: 'meta',
         ...elements.text,
-        key: 'keywords'
+        key: 'keywords',
+        validators: [notempty]
       },
       {
         ...elements.button,
@@ -149,6 +156,12 @@ const formsModel = {
     ]
   } as Form
 }
+
+Object.values(formsModel).forEach(form => {
+  form.fields.forEach(field => {
+    field.id = createSafeId()
+  })
+})
 
 export {
   formsModel
