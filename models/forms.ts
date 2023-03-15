@@ -1,6 +1,20 @@
 import { Form, validators } from "mesh-ui-components"
 import { FORM_NAMES } from "~~/constants/forms"
 import { createSafeId } from "~~/utils/createSafeId"
+import { usePages } from '~~/composables/usePages'
+import { Forms } from "~~/types/forms"
+
+const { isUniqueSlug, onlyOneHomePage } = usePages()
+
+const uniquesSlugValidator = {
+  name: 'uniqueslug',
+  validate: isUniqueSlug
+}
+
+const onlyOneHomePageValidator = {
+  name: 'onlyonehomepage',
+  validate: onlyOneHomePage
+}
 
 const {
   nonumber,
@@ -35,7 +49,28 @@ const elements = {
   }
 }
 
-const formsModel = {
+const createFormsModel = (formName : keyof Forms, editPageMode? : boolean) => {
+  Object.values(forms).forEach(form => {
+    form.fields.forEach(field => {
+      field.id = createSafeId()
+    })
+  })
+
+  if (formName === FORM_NAMES.CREATE_PAGE) {
+    const fieldToUpdate = forms[formName].fields.find(field => field.key === 'slug')
+    if (fieldToUpdate) {
+      fieldToUpdate.validators = editPageMode ? [specialchar] : [specialchar, uniquesSlugValidator, onlyOneHomePageValidator]
+    }
+  }
+
+  return forms[formName]
+}
+
+export {
+  createFormsModel
+}
+
+const forms = {
   [FORM_NAMES.LOGIN]: {
     meta: {
       name: FORM_NAMES.LOGIN
@@ -111,7 +146,8 @@ const formsModel = {
         section: 'general',
         ...elements.text,
         key: 'slug',
-        validators: [slug]
+        secondValidationValue: 'menuParent',
+        validators: [specialchar]
       },
       {
         section: 'general',
@@ -155,14 +191,4 @@ const formsModel = {
       }
     ]
   } as Form
-}
-
-Object.values(formsModel).forEach(form => {
-  form.fields.forEach(field => {
-    field.id = createSafeId()
-  })
-})
-
-export {
-  formsModel
 }

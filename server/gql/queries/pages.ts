@@ -1,3 +1,5 @@
+import { gql } from 'graphql-tag'
+
 export const createPageMutation = gql`
   mutation createPage ($page: PageInput!) {
     createPage (page: $page) {

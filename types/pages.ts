@@ -4,6 +4,7 @@ interface Page {
   isInMenu: Boolean
   parent: string[]
   menuOrder: number
+  menuParent: string
   title: string
   description: string
   keywords: string

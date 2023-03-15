@@ -26,6 +26,29 @@ export const usePages = () => {
     }
   }
 
+  const createPageParentMeta = (menuParent : string, slug : string) => {
+    let array : string[] = [] 
+    const recursivelyCheckParent = (parent : any) => {
+      if (parent) {
+        array.push(parent.replace('/', ''))
+      }
+      const parentPage = pages.value.find(page => page.name === parent)
+      if (parentPage) {
+        recursivelyCheckParent(parentPage.parent.pop())
+        return
+      }
+      return
+    }
+    recursivelyCheckParent(menuParent)
+
+    array.reverse()
+
+    return {
+      pathArray: array,
+      path: `${array.length ? '/' : ''}${array.join('/')}/${slug}`
+    }
+  }
+
   const deletePage = async (id: String) => {
     const variables = {
       id
@@ -44,7 +67,7 @@ export const usePages = () => {
 
   const fetchPages = async () => {
     const variables = {
-      admin: true, fetchPolicy: "no-cache" 
+      admin: true, fetchPolicy: "no-cache"
     }
     const { data, error } = await useAsyncQuery<{ pages: Page[] }>(fetchPagesQuery, variables)
     if (error.value) {
@@ -61,20 +84,52 @@ export const usePages = () => {
       slug, fetchPolicy: "no-cache" 
     }
     const { data, error } = await useAsyncQuery<{singlePage : Page}>(fetchSinglePageQuery, variables)
-      if (error.value) {
-        await handleError(error.value)
+    if (error.value) {
+      await handleError(error.value)
+    }
+    if (!isValidPath(pathArr, data.value?.singlePage)) {
+      await handleError({ message: ERRORS.INVALID_SINGLE_PAGE_PARENT_TREE })
+    }
+    return data.value?.singlePage
+  }
+
+  const isUniqueSlug = (input : string, parent : string) => {
+    if (!onlyOneHomePage(input) || !input) {
+      return true
+    }
+    if (parent) {
+      const referencePage = pages.value.filter(page => page.slug === parent)
+      if (referencePage.some(page => page.slug.replace('/', '') === input.replace('/', ''))) {
+        return false
       }
-      if (!isValidPath(pathArr, data.value?.singlePage)) {
-        await handleError({ message: ERRORS.INVALID_SINGLE_PAGE_PARENT_TREE })
+    } else {
+      const referencePage = pages.value.filter(page => !page.parent.length)
+      if (referencePage.some(page => page.slug.replace('/', '') === input.replace('/', ''))) {
+        return false
       }
-      return data.value?.singlePage
+    }
+    return true
+  }
+
+  const onlyOneHomePage = (input : string) => {
+    if (input !== '/') {
+      return true
+    }
+    const referencePage = pages.value.find(page => page.slug === '/')
+    if (referencePage) {
+      return false
+    }
+    return true
   }
 
   return {
     createPage,
+    createPageParentMeta,
     deletePage,
     fetchPages,
     fetchSinglePage,
+    isUniqueSlug,
+    onlyOneHomePage,
     pages: pages
   }
 }
