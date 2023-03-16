@@ -2,6 +2,7 @@ import { ERRORS } from '~~/constants/errors'
 import { createPageMutation, deletePageMutation, fetchPagesQuery, fetchSinglePageQuery } from '~~/server/gql/queries/pages'
 import { Page } from '~~/types/pages'
 import { handleError } from '~~/utils/handleError'
+import { sanitizeFullPath } from '~~/utils/sanitizeFullPath'
 import { validators } from 'mesh-ui-components'
 import { usePagesStore } from '~~/store/pages'
 import { storeToRefs } from 'pinia'
@@ -84,18 +85,16 @@ export const usePages = () => {
   }
 
   const fetchSinglePage = async (fullPath : string) => {
-    const trimmedPath = fullPath.endsWith('/')
-    ? fullPath.slice(0, -1)
-    : fullPath
+    const sanitizedPath = sanitizeFullPath(fullPath)
     const variables = {
-      path: trimmedPath,
+      path: sanitizedPath,
       fetchPolicy: "no-cache" 
     }
     const { data, error } = await useAsyncQuery<{singlePage : Page}>(fetchSinglePageQuery, variables)
     if (error.value) {
       await handleError(error.value)
     }
-    if (!isValidPath(trimmedPath, data.value?.singlePage.path as string)) {
+    if (!isValidPath(sanitizedPath, data.value?.singlePage.path as string)) {
       await handleError({ message: ERRORS.INVALID_SINGLE_PAGE_PARENT_TREE })
     }
     return data.value?.singlePage
