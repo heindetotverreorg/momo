@@ -17,7 +17,7 @@
     "@nuxt/test-utils": "^3.2.3",
     "@vue/test-utils": "^2.3.1",
     "happy-dom": "^8.9.0",
-    "mesh-ui-components": "^0.3.2",
+    "mesh-ui-components": "^0.3.5",
     "nuxt": "^3.1.2",
     "vitest": "^0.29.2"
   },

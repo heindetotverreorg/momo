@@ -8,6 +8,7 @@ export const createPageMutation = gql`
       isInMenu
       contentComponents
       parent
+      path
       menuOrder
       title
       description
@@ -34,6 +35,7 @@ export const fetchPagesQuery = gql`
       isInMenu
       contentComponents
       parent
+      path
       menuOrder
       title
       description
@@ -45,13 +47,14 @@ export const fetchPagesQuery = gql`
 `
 
 export const fetchSinglePageQuery = gql`
-  query fetchSinglePage ($slug: String!) {
-    singlePage (slug: $slug) {
+  query fetchSinglePage ($path: String!) {
+    singlePage (path: $path) {
       name
       slug
       isInMenu
       contentComponents
       parent
+      path
       menuOrder
       title
       description

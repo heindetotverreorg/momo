@@ -23,9 +23,9 @@ export const resolvers = {
         throw error
       }
     },
-    singlePage: async (parent : any, { slug } : any) => {
+    singlePage: async (parent : any, { path } : any) => {
       try {
-        const existingPage = await Pages.findOne({ slug: slug })
+        const existingPage = await Pages.findOne({ path: path })
         if (existingPage) {
           return existingPage
         }

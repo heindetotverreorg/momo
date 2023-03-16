@@ -4,6 +4,7 @@ export const typeDefs =  `#graphql
     slug: String
     isInMenu: Boolean
     parent: [String]
+    path: String
     menuOrder: Int
     title: String
     description: String
@@ -28,6 +29,7 @@ export const typeDefs =  `#graphql
     slug: String
     isInMenu: Boolean
     parent: [String]
+    path: String
     menuOrder: Int
     title: String
     description: String
@@ -49,7 +51,7 @@ export const typeDefs =  `#graphql
 
   type Query {
     pages(admin: Boolean): [Page]
-    singlePage(slug: String): Page
+    singlePage(path: String): Page
     singleUser: User
   }
 

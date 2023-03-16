@@ -2,9 +2,10 @@ import { ERRORS } from '~~/constants/errors'
 import { createPageMutation, deletePageMutation, fetchPagesQuery, fetchSinglePageQuery } from '~~/server/gql/queries/pages'
 import { Page } from '~~/types/pages'
 import { handleError } from '~~/utils/handleError'
-import { pathParentMatch } from '~~/utils/pathParentMatch'
+import { validators } from 'mesh-ui-components'
 import { usePagesStore } from '~~/store/pages'
 import { storeToRefs } from 'pinia'
+import { PATHS } from '~~/constants/paths'
 
 export const usePages = () => {
   const { addPage, removePage, replacePages } = usePagesStore()
@@ -27,7 +28,8 @@ export const usePages = () => {
   }
 
   const createPageParentMeta = (menuParent : string, slug : string) => {
-    let array : string[] = [] 
+    let array : string[] = []
+
     const recursivelyCheckParent = (parent : any) => {
       if (parent) {
         array.push(parent.replace('/', ''))
@@ -43,9 +45,11 @@ export const usePages = () => {
 
     array.reverse()
 
+    const path = `${array.length ? '/' : ''}${array.join('/')}/${slug}`
+
     return {
       pathArray: array,
-      path: `${array.length ? '/' : ''}${array.join('/')}/${slug}`
+      path: slug === PATHS.HOME ? '/' : path
     }
   }
 
@@ -79,15 +83,19 @@ export const usePages = () => {
     return pages
   }
 
-  const fetchSinglePage = async (slug : String, pathArr : String[], fullPath : String) => {
+  const fetchSinglePage = async (fullPath : string) => {
+    const trimmedPath = fullPath.endsWith('/')
+    ? fullPath.slice(0, -1)
+    : fullPath
     const variables = {
-      slug, fetchPolicy: "no-cache" 
+      path: trimmedPath,
+      fetchPolicy: "no-cache" 
     }
     const { data, error } = await useAsyncQuery<{singlePage : Page}>(fetchSinglePageQuery, variables)
     if (error.value) {
       await handleError(error.value)
     }
-    if (!isValidPath(pathArr, data.value?.singlePage)) {
+    if (!isValidPath(trimmedPath, data.value?.singlePage.path as string)) {
       await handleError({ message: ERRORS.INVALID_SINGLE_PAGE_PARENT_TREE })
     }
     return data.value?.singlePage
@@ -134,6 +142,7 @@ export const usePages = () => {
   }
 }
 
-const isValidPath = (pathArr : String[], page : Page | undefined) : Boolean => {
-  return page ? pathParentMatch(pathArr, page) : false
+const isValidPath = (pathFromUrl : string, pathFromPage : string) : Boolean => {
+  const { issamevalue } = validators
+  return issamevalue.validate(pathFromUrl, pathFromPage)
 }

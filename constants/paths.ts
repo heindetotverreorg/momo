@@ -1,5 +1,6 @@
 const PATHS = {
-  PATH_BASE: '/'
+  PATH_BASE: '/',
+  HOME: 'home'
 }
 
 Object.freeze(PATHS)

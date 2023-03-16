@@ -1,4 +1,5 @@
 <template>
+  <p v-if="!hasHomePage">If you don't have a home page yet, you first have to make one</p>
   <MeshForm
     :content="getContent"
     :name="form.meta.name"
@@ -17,6 +18,7 @@
           :key="field.key"
           :id="`${field.key}_${field.id}`"
           :is="field.component"
+          :disabled="field.disabled"
           :force-validation="forceValidation"
           :highlight-validation="field.highlightValidation"
           :label="getScopedContent('admin.createPage.form.labels', field.key)"
@@ -52,9 +54,6 @@
     </template>
   </MeshForm>
   <p>{{ response }}</p>
-  <button @click="first()">add first page</button>
-  <button @click="second()">add second page</button>
-  <button @click="third()">add third page</button>
 </template>
 <script setup lang="ts">
 import { usePages } from '~~/composables/usePages'
@@ -79,12 +78,15 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
 
   const formValues = ref({}) as Record<string, any>
   const response = ref()
+  const hasHomePage = ref()
 
   await Promise.all([fetchSingleUser(), fetchPages()])
-  setPageFromQuery()
 
   const editMode = !!query?.id
   const { form } = multiPartForm(createFormsModel(FORM_NAMES.CREATE_PAGE, editMode))
+
+  setPageFromQuery()
+  homePageCheck()
 
   const getPagesTitles = (key : string) => {
     if (key === 'menuParent') {
@@ -92,59 +94,13 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
     }
   }
 
-  const first = () => {
-    const form = {
-      formValues: {
-        slug: 'first',
-        name: 'first',
-        menuParent: '',
-        parent: [],
-        title: 'first level',
-        description: 'firstingding',
-        keywords: 'first level test',
-      }
-    }
-    onSubmit(form)
-  }
-
-  const second = () => {
-    const form = {
-      formValues: {
-        slug: 'second',
-        name: 'second',
-        menuParent: 'first',
-        parent: ['first'],
-        title: 'second level',
-        description: 'secondingding',
-        keywords: 'second level test',
-      }
-    }
-    onSubmit(form)
-  }
-
-  const third = () => {
-    const form = {
-      formValues: {
-        slug: 'third',
-        name: 'third',
-        menuParent: 'second',
-        parent: ['first', 'second'],
-        title: 'third level',
-        description: 'thirdingding',
-        keywords: 'third level test',
-      }
-    }
-    onSubmit(form)
-  }
-
   const onSubmit = async (form : Record<string, any>) => {
     const { pathArray, path } = createPageParentMeta(form.formValues.menuParent, form.formValues.slug)
-
-    console.log(pathArray, path)
-
+    
     const page = {
       id: `${form.formValues.name}_${createSafeId()}`,
-      parent: parent,
+      parent: pathArray,
+      path: path,
       menuOrder: 0,
       contentComponents: [],
       author: user.value?.id,
@@ -152,6 +108,24 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
     }
     delete page.menuParent
     response.value = await createPage(page)
+  }
+
+  function homePageCheck() {
+    if (pages.value.find(page => page.name === 'home')) {
+      hasHomePage.value = true
+    } else {
+      formValues.value.slug = 'home'
+      formValues.value.name = 'home'
+      form.sections.general = form.sections?.general.filter(field => field.key !== 'slug')
+
+      const nameField = form.sections?.general.find(field => field.key === 'name')
+      const menuParentField = form.sections?.general.find(field => field.key === 'menuParent')
+      if (nameField && menuParentField) {
+        nameField.disabled = true
+        nameField.highlightValidation = false
+        menuParentField.disabled = true
+      }
+    }
   }
 
   function setPageFromQuery() {

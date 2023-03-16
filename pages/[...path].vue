@@ -10,17 +10,9 @@ import { usePages } from '~~/composables/usePages'
 import { usePath } from '~~/composables/usePath';
 
   const { fetchSinglePage } = usePages()
-  const { 
-    slug,
-    pathArr,
-    fullPath
-  } = usePath()
+  const { fullPath } = usePath()
 
   const page = ref()
 
-  page.value = await fetchSinglePage(
-    slug,
-    pathArr, 
-    fullPath
-  )
+  page.value = await fetchSinglePage(fullPath)
 </script>

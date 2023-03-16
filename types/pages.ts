@@ -3,6 +3,7 @@ interface Page {
   slug: string
   isInMenu: Boolean
   parent: string[]
+  path: string,
   menuOrder: number
   menuParent: string
   title: string

@@ -16,6 +16,9 @@ export const PageSchema = new Schema({
   parent: {
     type: Array
   },
+  path: {
+    type: String
+  },
   menuOrder: {
     type: Number,
     required: true

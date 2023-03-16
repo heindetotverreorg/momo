@@ -4,8 +4,6 @@ export const pathParentMatch = (pathArr : String[], page : Page) => {
   // check if path compares to the pages parents array
   const isRootPath = pathArr.length === 1
   let pathMatch : Boolean = true
-  console.log(pathArr, page.parent)
-  console.log(isRootPath)
   pathArr.forEach((path, index) => {
     // page has invalid parents compared to path so we can stop comparing
     if (!pathMatch) return

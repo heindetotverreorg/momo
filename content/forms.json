@@ -18,7 +18,7 @@
             "notempty": "is required",
             "minlength": "should be minimal 8 characters",
             "specialchar": "should have at least 1 special character",
-            "slug": "should start with /",
+            "slug": "only letters, numbers and dashes (-) are allowed",
             "uniqueslug": "should be unique slug under chosen parent",
             "onlyonehomepage": "only one page with slug / is allowed",
             "issamevalue": "should be same value as",
