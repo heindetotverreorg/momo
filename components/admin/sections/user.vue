@@ -1,4 +1,5 @@
 <template>
+  <h2>User</h2>
   <div>
     {{ user }}
   </div>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>Pages</h2>
     <p
       v-for="page of pages"
       :key="page.id"

@@ -2,7 +2,6 @@ import { ERRORS } from '~~/constants/errors'
 import { createPageMutation, deletePageMutation, fetchPagesQuery, fetchSinglePageQuery } from '~~/server/gql/queries/pages'
 import { Page } from '~~/types/pages'
 import { handleError } from '~~/utils/handleError'
-import { sanitizeFullPath } from '~~/utils/sanitizeFullPath'
 import { validators } from 'mesh-ui-components'
 import { usePagesStore } from '~~/store/pages'
 import { storeToRefs } from 'pinia'
@@ -85,46 +84,44 @@ export const usePages = () => {
   }
 
   const fetchSinglePage = async (fullPath : string) => {
-    const sanitizedPath = sanitizeFullPath(fullPath)
     const variables = {
-      path: sanitizedPath,
+      path: fullPath,
       fetchPolicy: "no-cache" 
     }
     const { data, error } = await useAsyncQuery<{singlePage : Page}>(fetchSinglePageQuery, variables)
     if (error.value) {
       await handleError(error.value)
     }
-    if (!isValidPath(sanitizedPath, data.value?.singlePage.path as string)) {
+    if (!isValidPath(fullPath, data.value?.singlePage.path as string)) {
       await handleError({ message: ERRORS.INVALID_SINGLE_PAGE_PARENT_TREE })
     }
     return data.value?.singlePage
   }
 
-  const isUniqueSlug = (input : string, parent : string) => {
-    if (!onlyOneHomePage(input) || !input) {
+  const isUniqueSlug = (slug : string, parent : string) => {
+    if (!onlyOneHomePage(slug) || !slug) {
       return true
     }
     if (parent) {
-      const referencePage = pages.value.filter(page => page.slug === parent)
-      if (referencePage.some(page => page.slug.replace('/', '') === input.replace('/', ''))) {
+      const referencePages = pages.value.filter(page => page.parent[page.parent.length - 1] === parent)
+      if (referencePages.some(page => page.slug === slug)) {
         return false
       }
     } else {
-      const referencePage = pages.value.filter(page => !page.parent.length)
-      if (referencePage.some(page => page.slug.replace('/', '') === input.replace('/', ''))) {
+      const referencePages = pages.value.filter(page => !page.parent.length)
+      if (referencePages.some(page => page.slug === slug)) {
         return false
       }
     }
     return true
   }
 
-  const onlyOneHomePage = (input : string) => {
-    if (input !== '/') {
-      return true
-    }
-    const referencePage = pages.value.find(page => page.slug === '/')
-    if (referencePage) {
-      return false
+  const onlyOneHomePage = (slug : string) => {
+    if (slug === 'home') {
+      const referencePage = pages.value.find(page => page.slug === slug)
+      if (referencePage) {
+        return false
+      }
     }
     return true
   }

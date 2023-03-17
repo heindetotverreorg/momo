@@ -1,4 +1,4 @@
-import { PATHS } from '~~/constants/paths'
+import { sanitizeFullPath } from '~~/utils/sanitizeFullPath'
 
 export const usePath = () => {
   const { path, fullPath, query } = useRoute()
@@ -10,7 +10,7 @@ export const usePath = () => {
   }
 
   return {
-    fullPath,
+    fullPath: sanitizeFullPath(fullPath),
     queryKey,
     updateQuery
   }

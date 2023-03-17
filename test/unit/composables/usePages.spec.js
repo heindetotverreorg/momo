@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest"
 import { usePages } from '~~/composables/usePages'
 import { usePagesStore } from '~~/store/pages'
-import { firstPage, secondPage } from '~~/test/unit/mocks/pages/pages.json'
+import { home, firstPage, secondPage, thirdPage } from '~~/test/unit/mocks/pages/pages.json'
 
 describe('createPageParentMeta: test/unit/composables/usePages.spec.js', () => {
   it('should return empty pathArray and single level path if no parent is passed to createPageParentMeta', () => {
@@ -38,5 +38,24 @@ describe('createPageParentMeta: test/unit/composables/usePages.spec.js', () => {
       pathArray: ['first', 'second'],
       path: '/first/second/third'
     })
+  })
+
+  it('should not be able to save page if slug already exists under parent', () => {
+    const { isUniqueSlug, pages } = usePages()
+    const { replacePages } = usePagesStore()
+    const parent = 'second'
+    const slug = 'third'
+    replacePages([firstPage, secondPage, thirdPage])
+    expect(pages.value.length).toBe(3)
+    expect(isUniqueSlug(slug, parent)).toBe(false)
+  })
+
+  it('should not be able to save page as home page if home page already exists', () => {
+    const { onlyOneHomePage, pages } = usePages()
+    const { replacePages } = usePagesStore()
+    const slug = 'home'
+    replacePages([home])
+    expect(pages.value.length).toBe(1)
+    expect(onlyOneHomePage(slug)).toBe(false)
   })
 })

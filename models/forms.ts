@@ -59,7 +59,7 @@ const createFormsModel = (formName : keyof Forms, editPageMode? : boolean) => {
   if (formName === FORM_NAMES.CREATE_PAGE) {
     const fieldToUpdate = forms[formName].fields.find(field => field.key === 'slug')
     if (fieldToUpdate) {
-      fieldToUpdate.validators = editPageMode ? [slug] : [slug, uniquesSlugValidator, onlyOneHomePageValidator]
+      fieldToUpdate.validators = editPageMode ? [notempty, slug] : [notempty, slug, uniquesSlugValidator, onlyOneHomePageValidator]
     }
   }
 
@@ -147,7 +147,7 @@ const forms = {
         ...elements.text,
         key: 'slug',
         secondValidationValue: 'menuParent',
-        validators: [slug]
+        validators: [notempty, slug]
       },
       {
         section: 'general',
