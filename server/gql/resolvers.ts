@@ -1,19 +1,24 @@
 import { Pages, Users } from '~~/server/mongo/mongoConnect'
 import { ERRORS } from '~~/constants/errors';
+import { verifyToken } from '~~/server/utils/verifyToken'
 import * as jose from 'jose'
 
 const decodeToken = async (token : string) => {
+  const isVerifiedTtoken = await verifyToken(token)
+  if (!isVerifiedTtoken) {
+    throw new Error(ERRORS.NOT_AUTHENTICATED_FOR_ADMIN)
+  }
   const { user } = jose.decodeJwt(token)
   return user
 }
 
 export const resolvers = {
   Query: {
-    pages: async (parent : any, { admin } : any,context : any) => {
-      if (admin && !context.token) {
-        throw new Error(ERRORS.NOT_AUTHENTICATED_FOR_ADMIN)
-      }
+    pages: async (parent : any, { admin } : any, context : any) => {
       try {
+        if (admin) {
+          await decodeToken(context.token)
+        }
         const pagesArray = await Pages.find({})
         if (!pagesArray) {
           throw new Error(ERRORS.NO_PAGES_IN_DATABASE)
@@ -35,11 +40,9 @@ export const resolvers = {
       }
     },
     singleUser: async (parent : any, variables : any, context : any) => {
-      if (!context.token) {
-        throw new Error(ERRORS.NOT_AUTHENTICATED_FOR_ADMIN)
-      }
-      const id = await decodeToken(context.token)
       try {
+        await decodeToken(context.token)
+        const id = await decodeToken(context.token)
         const user = await Users.findOne({ id: id })
         if (!user) {
           throw new Error(ERRORS.USER_NOT_FOUND)
@@ -51,8 +54,9 @@ export const resolvers = {
     }
   },
   Mutation: {
-    createPage: async (parent : any, { page } : any) => {
+    createPage: async (parent : any, { page } : any, context : any) => {
       try {
+        await decodeToken(context.token)
         const newPage = new Pages({
           ...page
         })
@@ -68,8 +72,9 @@ export const resolvers = {
         throw error
       }
     },
-    createUser: async (parent : any, { user } : any) => {
+    createUser: async (parent : any, { user } : any, context : any) => {
       try {
+        await decodeToken(context.token)
         const newUser = new Users({
           ...user
         })
@@ -83,8 +88,9 @@ export const resolvers = {
         throw error
       }
     },
-    deletePage: async (parent : any, { id } : any) => {
+    deletePage: async (parent : any, { id } : any, context : any) => {
       try {
+        await decodeToken(context.token)
         const deletedPage = await Pages.findOneAndDelete({ id: id })
         if (!deletedPage) {
           throw new Error(ERRORS.PAGE_NOT_FOUND)
@@ -94,8 +100,9 @@ export const resolvers = {
         throw error
       }
     },
-    deleteUser: async (parent : any, { id } : any) => {
+    deleteUser: async (parent : any, { id } : any, context : any) => {
       try {
+        await decodeToken(context.token)
         const deletedUser = await Pages.findOneAndDelete({ id: id })
         if (!deletedUser) {
           throw new Error(ERRORS.USER_NOT_FOUND)

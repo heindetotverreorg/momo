@@ -67,7 +67,7 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
 
   definePageMeta({
     layout: 'admin',
-    middleware: ['auth']
+    middleware: ['auth-check']
   });
 
   const { query } = useRoute()

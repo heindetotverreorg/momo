@@ -69,9 +69,15 @@ export const usePages = () => {
     }
   }
 
-  const fetchPages = async () => {
+  const fetchPages = async (config : { cached: boolean } = { cached: true }) => {
+    if (config.cached) {
+      if (pages.value.length) {
+        return pages
+      }
+    }
     const variables = {
-      admin: true, fetchPolicy: "no-cache"
+      admin: true,
+      fetchPolicy: "no-cache"
     }
     const { data, error } = await useAsyncQuery<{ pages: Page[] }>(fetchPagesQuery, variables)
     if (error.value) {

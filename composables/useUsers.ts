@@ -9,12 +9,12 @@ export const useUsers = () => {
   const { setUser } = useUserStore()
   const { user } = storeToRefs(useUserStore())
   
-  const createUser = async (formValues : Record<string, any>) => {
-    delete formValues.passwordCheck
+  const createUser = async (newUser : Record<string, any>) => {
+    delete newUser.passwordCheck
     const variables = {
       user : {
-        ...formValues,
-        id: `${formValues.email}_${createSafeId()}`,
+        ...newUser,
+        id: `${newUser.email}_${createSafeId()}`,
         role: 'admin'
       }
     }
@@ -24,7 +24,7 @@ export const useUsers = () => {
       if (result?.data?.singleUser) {
         setUser(result.data.singleUser)
         const { login } = useAuth()
-        return await login({ email: formValues.email, password: formValues.password })
+        return await login({ email: newUser.email, password: newUser.password })
       }
       return result?.errors
     } catch (error) {
@@ -33,6 +33,9 @@ export const useUsers = () => {
   }
 
   const fetchSingleUser = async () => {
+    if (user.value && user.value.id) {
+      return user
+    }
     try {
       const { data, error } = await useAsyncQuery<{ singleUser: User }>(fetchSingleUserQuery)
       if (error.value) {

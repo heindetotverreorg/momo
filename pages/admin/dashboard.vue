@@ -12,12 +12,11 @@ import { useUsers } from '~~/composables/useUsers'
 
   definePageMeta({
     layout: 'admin',
-    middleware: ['auth']
+    middleware: ['auth-check']
   });
 
   const { fetchPages } = usePages()
   const { fetchSingleUser } = useUsers()
-  const router = useRouter()
 
   await Promise.all([fetchSingleUser(), fetchPages()])
 </script>
