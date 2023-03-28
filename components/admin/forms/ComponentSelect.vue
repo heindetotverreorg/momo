@@ -2,7 +2,7 @@
   <div>
     ThemeComponentSelect
     <div
-      v-for="themeComponent, index of componentArray"
+      v-for="themeComponent of componentArray"
       :key="themeComponent.id"
     >
       <component :is="themeComponent.name"/>
@@ -22,7 +22,7 @@
     :type="type"
     :validators="validators"
     v-model="currentValue"
-    @update:modelValue="emit('update:modelValue', currentValue)"
+    @update:modelValue="emit('update:modelValue', componentArray)"
   />
 </template>
 <script setup lang="ts">
@@ -61,5 +61,6 @@ import { createSafeId } from "~~/utils/createSafeId"
 
   const deleteComponent = (componentId : string) => {
     componentArray.value = componentArray.value?.filter(c => c.id !== componentId)
+    emit('update:modelValue', componentArray)
   }
 </script>
