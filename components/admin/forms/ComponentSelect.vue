@@ -1,6 +1,14 @@
 <template>
-  ThemeComponentSelect
-  <component :is="currentValue"/>
+  <div>
+    ThemeComponentSelect
+    <div
+      v-for="themeComponent, index of componentArray"
+      :key="themeComponent.id"
+    >
+      <component :is="themeComponent.name"/>
+      <button @click="deleteComponent(themeComponent.id)">delete Component</button>
+    </div>
+  </div>
   <MeshSelect
     :autocomplete="autocomplete"
     :disabled="disabled"
@@ -11,15 +19,16 @@
     :name="name"
     :options="options"
     :required="required"
-    :second-validation-value="secondValidationValue"
     :type="type"
     :validators="validators"
     v-model="currentValue"
-    @input="onInput"
+    @update:modelValue="emit('update:modelValue', currentValue)"
   />
 </template>
 <script setup lang="ts">
-import { MeshSelect, shareableProps } from 'mesh-ui-components'
+import { useTheme } from '~~/composables/useTheme'
+import { shareableProps } from 'mesh-ui-components'
+import { createSafeId } from "~~/utils/createSafeId"
 
   const props = defineProps({
     ...shareableProps,
@@ -34,9 +43,23 @@ import { MeshSelect, shareableProps } from 'mesh-ui-components'
     'update:modelValue'
   ])
 
-  const currentValue = ref()
+  const { themeComponents } = useTheme()
 
-  const onInput = () => {
-    emit('update:modelValue', currentValue)
+  const currentValue = ref<string>('')
+  const componentArray = ref<{ name : string, id : string, meta : any }[]>([])
+
+  watch(currentValue, () => {
+    if (currentValue.value) {
+      const selectedComponent = themeComponents.find(component => component.name === currentValue.value)
+      if (selectedComponent) {
+        const newId = `${selectedComponent.name}_${createSafeId()}`
+        componentArray.value.push({...selectedComponent, id: newId})
+      }
+    }
+    currentValue.value = ''
+  })
+
+  const deleteComponent = (componentId : string) => {
+    componentArray.value = componentArray.value?.filter(c => c.id !== componentId)
   }
 </script>

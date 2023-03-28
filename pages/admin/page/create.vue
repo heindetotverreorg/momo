@@ -95,7 +95,7 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
       return pages.value.map(page => page.title)
     }
     if (key === 'themeComponentSelect') {
-      return themeComponents
+      return themeComponents.map((component : any) => component.name)
     }
     return []
   }
