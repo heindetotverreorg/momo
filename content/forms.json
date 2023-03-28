@@ -53,6 +53,7 @@
               "title": "Title of the page",
               "description": "Add a description for your page",
               "keywords": "Add keywords on your pages subject",
+              "themeComponentSelect": "Select a component",
               "createPageButton": "Create page"
             }
           }

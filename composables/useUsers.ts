@@ -33,9 +33,6 @@ export const useUsers = () => {
   }
 
   const fetchSingleUser = async () => {
-    if (user.value && user.value.id) {
-      return user
-    }
     try {
       const { data, error } = await useAsyncQuery<{ singleUser: User }>(fetchSingleUserQuery)
       if (error.value) {

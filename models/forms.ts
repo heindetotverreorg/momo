@@ -3,6 +3,7 @@ import { FORM_NAMES } from "~~/constants/forms"
 import { createSafeId } from "~~/utils/createSafeId"
 import { usePages } from '~~/composables/usePages'
 import { Forms } from "~~/types/forms"
+import ComponentSelect from '~~/components/admin/forms/ComponentSelect.vue'
 
 const { isUniqueSlug, onlyOneHomePage } = usePages()
 
@@ -44,6 +45,12 @@ const elements = {
   },
   select: {
     component: 'MeshSelect',
+    type: 'select',
+    validators: [{ name: 'select', validate: () => true }]
+  },
+  componentSelect: {
+    component: ComponentSelect,
+    // component: 'MeshSelect',
     type: 'select',
     validators: [{ name: 'select', validate: () => true }]
   }
@@ -183,6 +190,12 @@ const forms = {
         section: 'meta',
         ...elements.text,
         key: 'keywords',
+        validators: [notempty]
+      },
+      {
+        section: 'content',
+        ...elements.componentSelect,
+        key: 'themeComponentSelect',
         validators: [notempty]
       },
       {

@@ -1,8 +1,23 @@
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      themeComponents: []
+    }
+  },
+  components: {
+    dirs: [
+      "./components",
+      {
+        "path": "./theme/components",
+        "global": true
+      }
+    ]
+  },
   modules: [
     '@nuxtjs/apollo',
     '@pinia/nuxt',
-    './modules/mesh-ui-components'
+    './modules/mesh-ui-components',
+    './modules/theme'
   ],
   apollo: {
     clients: {
@@ -14,6 +29,16 @@ export default defineNuxtConfig({
         tokenStorage: 'cookie',
         inMemoryCacheOptions: {
           addTypename: false
+        }
+      }
+    }
+  },
+  // css: ['@/theme/assets/style/theme.scss'],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@import "@/theme/assets/style/theme.scss";`
         }
       }
     }

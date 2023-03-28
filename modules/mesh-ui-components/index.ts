@@ -10,6 +10,6 @@ export default defineNuxtModule({
   },
   async setup(_, nuxt) {
     nuxt.options.css.push('mesh-ui-components/dist/main.css')
-    addPlugin(path.resolve(__dirname, './register.ts'))
+    addPlugin(path.resolve(__dirname, './registerMeshComponents.ts'))
   }
 })

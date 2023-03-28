@@ -23,7 +23,7 @@
           :highlight-validation="field.highlightValidation"
           :label="getScopedContent('admin.createPage.form.labels', field.key)"
           :name="field.key"
-          :options="getPagesTitles(field.key)"
+          :options="getOptions(field.key)"
           :required="field.required"
           :second-validation-value="getSecondValdiationValue(field.secondValidationValue)"
           :type="field.type"
@@ -61,6 +61,7 @@ import { createFormsModel } from '~~/models/forms'
 import { useForms } from '~~/composables/useForms'
 import { useContent } from '~~/composables/useContent'
 import { useUsers } from '~~/composables/useUsers'
+import { useTheme } from '~~/composables/useTheme'
 import { FORM_NAMES } from '~~/constants/forms';
 import { createSafeId } from "~~/utils/createSafeId"
 import { MeshForm, MeshButton } from 'mesh-ui-components';
@@ -75,7 +76,8 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
   const { fetchSingleUser, user } = useUsers()
   const { getContent, getScopedContent } = useContent()
   const { multiPartForm } = useForms()
-
+  const { themeComponents } = useTheme()
+  
   const formValues = ref({}) as Record<string, any>
   const response = ref()
   const hasHomePage = ref()
@@ -88,10 +90,14 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
   setPageFromQuery()
   homePageCheck()
 
-  const getPagesTitles = (key : string) => {
+  const getOptions = (key : string) => {
     if (key === 'menuParent') {
       return pages.value.map(page => page.title)
     }
+    if (key === 'themeComponentSelect') {
+      return themeComponents
+    }
+    return []
   }
 
   const onSubmit = async (form : Record<string, any>) => {

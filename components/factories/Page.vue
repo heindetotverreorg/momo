@@ -7,7 +7,7 @@
   const props = defineProps({
     page: {
       type: Object  as PropType<Page>,
-      required: true
+      default: () => {}
     }
   })
 </script>

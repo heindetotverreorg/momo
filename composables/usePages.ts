@@ -69,7 +69,7 @@ export const usePages = () => {
     }
   }
 
-  const fetchPages = async (config : { cached: boolean } = { cached: true }) => {
+  const fetchPages = async (config : { cached: boolean } = { cached: false }) => {
     if (config.cached) {
       if (pages.value.length) {
         return pages
