@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import { PATHS } from '~~/constants/paths'
 
 export const usePages = () => {
-  const { addPage, removePage, replacePages } = usePagesStore()
+  const { addPage, removePage, replacePages, setPageContent } = usePagesStore()
   const { pages } = storeToRefs(usePagesStore())
 
   const createPage = async (page: Page) => {
@@ -101,6 +101,7 @@ export const usePages = () => {
     if (!isValidPath(fullPath, data.value?.singlePage.path as string)) {
       await handleError({ message: ERRORS.INVALID_SINGLE_PAGE_PARENT_TREE })
     }
+    setPageContent(data.value?.singlePage.pageComponents)
     return data.value?.singlePage
   }
 

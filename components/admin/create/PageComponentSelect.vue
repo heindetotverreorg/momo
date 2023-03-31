@@ -1,14 +1,5 @@
 <template>
-  <div>
-    ThemeComponentSelect
-    <div
-      v-for="themeComponent of componentArray"
-      :key="themeComponent.id"
-    >
-      <component :is="themeComponent.name"/>
-      <button @click="deleteComponent(themeComponent.id)">delete Component</button>
-    </div>
-  </div>
+  pageComponentSelect
   <MeshSelect
     :autocomplete="autocomplete"
     :disabled="disabled"
@@ -26,7 +17,7 @@
   />
 </template>
 <script setup lang="ts">
-import { useTheme } from '~~/composables/useTheme'
+import { usePageComponents } from '~~/composables/usePageComponents'
 import { shareableProps } from 'mesh-ui-components'
 import { createSafeId } from "~~/utils/createSafeId"
 
@@ -43,17 +34,18 @@ import { createSafeId } from "~~/utils/createSafeId"
     'update:modelValue'
   ])
 
-  const { themeComponents } = useTheme()
+  const { availablePageComponents, setPageComponents } = usePageComponents()
 
   const currentValue = ref<string>('')
   const componentArray = ref<{ name : string, id : string, meta : any }[]>([])
 
   watch(currentValue, () => {
     if (currentValue.value) {
-      const selectedComponent = themeComponents.find(component => component.name === currentValue.value)
+      const selectedComponent = availablePageComponents.find(component => component.name === currentValue.value)
       if (selectedComponent) {
         const newId = `${selectedComponent.name}_${createSafeId()}`
         componentArray.value.push({...selectedComponent, id: newId})
+        setPageComponents(componentArray)
       }
     }
     currentValue.value = ''

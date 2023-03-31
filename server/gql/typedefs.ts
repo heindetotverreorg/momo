@@ -9,7 +9,7 @@ export const typeDefs =  `#graphql
     title: String
     description: String
     keywords: String
-    contentComponents: [String]
+    pageComponents: [String]
     id: String
     author: String
   }
@@ -34,7 +34,7 @@ export const typeDefs =  `#graphql
     title: String
     description: String
     keywords: String
-    contentComponents: [String]
+    pageComponents: [String]
     id: String
     author: String
   }

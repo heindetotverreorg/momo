@@ -13,6 +13,6 @@ export default defineNuxtModule({
   async setup(_, nuxt) {
     const componentPath = getFolderPath(PATHS.THEME_COMPONENT_FOLDER_PATH)
     const { filesFromFolder } = getFilesFromFolder(componentPath, { onlyFileNames: false })
-    nuxt.options.runtimeConfig.public.themeComponents = filesFromFolder
+    nuxt.options.runtimeConfig.public.availablePageComponents = filesFromFolder
   }
 })

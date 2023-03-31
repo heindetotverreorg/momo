@@ -21,5 +21,10 @@ export const usePagesStore = defineStore('pagesStore', () => {
     pages.value = pages.value.filter(page => page.id !== pageid)
   }
 
-  return { addPage, removePage, replacePages, pages }
+  return {
+    addPage,
+    pages,
+    removePage,
+    replacePages
+  }
 })

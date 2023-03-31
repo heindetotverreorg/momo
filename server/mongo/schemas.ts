@@ -35,7 +35,7 @@ export const PageSchema = new Schema({
     type: String,
     required: true
   },
-  contentComponents: {
+  pageComponents: {
     type: Array,
     required: true
   },

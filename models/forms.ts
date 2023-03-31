@@ -3,7 +3,8 @@ import { FORM_NAMES } from "~~/constants/forms"
 import { createSafeId } from "~~/utils/createSafeId"
 import { usePages } from '~~/composables/usePages'
 import { Forms } from "~~/types/forms"
-import ComponentSelect from '~~/components/admin/forms/ComponentSelect.vue'
+import { ThemeFieldModel } from '~~/types/theme'
+import ComponentSelect from '~~/components/admin/create/PageComponentSelect.vue'
 
 const { isUniqueSlug, onlyOneHomePage } = usePages()
 
@@ -73,8 +74,13 @@ const createFormsModel = (formName : keyof Forms, editPageMode? : boolean) => {
   return forms[formName]
 }
 
+const createFieldModel = (fields : ThemeFieldModel) => {
+  return fields
+}
+
 export {
-  createFormsModel
+  createFormsModel,
+  createFieldModel
 }
 
 const forms = {
@@ -195,7 +201,7 @@ const forms = {
       {
         section: 'content',
         ...elements.componentSelect,
-        key: 'themeComponentSelect',
+        key: 'pageComponentSelect',
         validators: [notempty]
       },
       {

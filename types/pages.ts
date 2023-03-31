@@ -9,7 +9,7 @@ interface Page {
   title: string
   description: string
   keywords: string
-  contentComponents: string[]
+  pageComponents: string[]
   id: string
   author: string
 }

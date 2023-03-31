@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      themeComponents: []
+      availablePageComponents: []
     }
   },
   components: {
@@ -33,7 +33,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  // css: ['@/theme/assets/style/theme.scss'],
   vite: {
     css: {
       preprocessorOptions: {
@@ -42,5 +41,8 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+  css: [
+    '@/assets/style/main.scss'
+  ]
 })
