@@ -1,5 +1,12 @@
 <template>
   pageComponentSelect
+  <ul v-if="pageComponents.length">
+    <li
+      v-for="component of pageComponents"
+    >
+      {{ component.name }}
+    </li>
+  </ul>
   <MeshSelect
     :autocomplete="autocomplete"
     :disabled="disabled"
@@ -34,7 +41,7 @@ import { createSafeId } from "~~/utils/createSafeId"
     'update:modelValue'
   ])
 
-  const { availablePageComponents, setPageComponents } = usePageComponents()
+  const { availablePageComponents, setPageComponents, pageComponents } = usePageComponents()
 
   const currentValue = ref<string>('')
   const componentArray = ref<{ name : string, id : string, meta : any }[]>([])
@@ -44,6 +51,7 @@ import { createSafeId } from "~~/utils/createSafeId"
       const selectedComponent = availablePageComponents.find(component => component.name === currentValue.value)
       if (selectedComponent) {
         const newId = `${selectedComponent.name}_${createSafeId()}`
+        const componentArray = pageComponents
         componentArray.value.push({...selectedComponent, id: newId})
         setPageComponents(componentArray)
       }
