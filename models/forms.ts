@@ -1,10 +1,9 @@
-import { Form, validators } from "mesh-ui-components"
+import { Form, validators, Validator, FormField } from "mesh-ui-components"
 import { FORM_NAMES } from "~~/constants/forms"
 import { createSafeId } from "~~/utils/createSafeId"
 import { usePages } from '~~/composables/usePages'
 import { Forms } from "~~/types/forms"
 import { ThemeFieldModel } from '~~/types/theme'
-import ComponentSelect from '~~/components/admin/create/PageComponentSelect.vue'
 
 const { isUniqueSlug, onlyOneHomePage } = usePages()
 
@@ -50,12 +49,11 @@ const elements = {
     validators: [{ name: 'select', validate: () => true }]
   },
   componentSelect: {
-    component: ComponentSelect,
-    // component: 'MeshSelect',
+    component: 'AdminCreatePageComponents',
     type: 'select',
     validators: [{ name: 'select', validate: () => true }]
   }
-}
+} as Record<string, { component : string, type: string, highlightValidation?: boolean, variant? : string, validators?: Validator[] }>
 
 const createFormsModel = (formName : keyof Forms, editPageMode? : boolean) => {
   Object.values(forms).forEach(form => {
@@ -74,13 +72,28 @@ const createFormsModel = (formName : keyof Forms, editPageMode? : boolean) => {
   return forms[formName]
 }
 
-const createFieldModel = (fields : ThemeFieldModel) => {
-  return fields
+const createPageComponentFieldModel = (fields : ThemeFieldModel) => {
+  const modelledFields = Object.entries(fields)
+    .map(field => {
+      const [key, value] = field
+      const fieldElement = elements[value.type]
+      if (fieldElement) {
+        return {
+          ...fieldElement,
+          id: `${key}_${createSafeId()}`,
+          key: `${key}`,
+          label: `Please enter the ${value.type}`,
+          default: value.default
+        } as FormField
+      }
+    })
+  .filter(field => field !== undefined)
+  return modelledFields
 }
 
 export {
   createFormsModel,
-  createFieldModel
+  createPageComponentFieldModel
 }
 
 const forms = {

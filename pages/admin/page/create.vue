@@ -1,7 +1,7 @@
 <template>
   <div class="box--horizontal">
     <AdminCreatePage />
-    <AdminContentCreate />
+    <AdminContentPreview />
   </div>
 </template>
 <script setup lang="ts">

@@ -1,22 +1,29 @@
 import { defineStore } from 'pinia'
-import { ThemeFieldModel } from '~~/types/theme'
+import { FormField } from 'mesh-ui-components'
 
 export const useThemeStore = defineStore('themeStore', () => {
-  const pageComponentContentState = ref({})
-  const pageComponentsState = ref<{ name : string, id : string, meta : any }[]>([])
+  const pageComponentFieldState = ref<Record<string, (FormField | undefined)[]>>({})
+  const pageComponentsState = ref<{ componentKey : string, id : string, meta : any }[]>([])
+  const editContentIdState = ref('')
 
-  const setPageComponentContent = (fields : ThemeFieldModel) => {
-    pageComponentContentState.value = fields
+  const setPageComponentFields = (fields : (FormField | undefined)[], id : string) => {
+    pageComponentFieldState.value[id] = fields
   }
  
-  const setPageComponents = (components : Ref<{ name : string, id : string, meta : any }[]>) => {
-    pageComponentsState.value  = components.value
+  const setPageComponents = (components : { componentKey : string, id : string, meta : any }[]) => {
+    pageComponentsState.value  = components
+  }
+
+  const setEditContentId = (id : string) => {
+    editContentIdState.value = id
   }
 
   return {
-    setPageComponentContent,
+    setEditContentId,
+    setPageComponentFields,
     setPageComponents,
-    pageComponentContentState,
+    editContentId: editContentIdState,
+    pageComponentFieldState,
     pageComponentsState
   }
 })

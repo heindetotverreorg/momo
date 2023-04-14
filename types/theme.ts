@@ -3,7 +3,8 @@ interface ThemeFieldModel {
   text?: Text,
   list?: List,
   link?: Link,
-  image?: Image
+  image?: Image,
+  description?: Text
 }
 
 interface Text {

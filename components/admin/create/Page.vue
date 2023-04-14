@@ -17,7 +17,7 @@
           v-for="field of form.sections[section]"
           :key="field.key"
           :id="`${field.key}_${field.id}`"
-          :is="field.component"
+          :is="resolveComponent(field.component)"
           :disabled="field.disabled"
           :force-validation="forceValidation"
           :highlight-validation="field.highlightValidation"
@@ -43,7 +43,7 @@
         v-for="button of form.buttons"
         class="m-t-1"
         :id="`${button.key}_${button.id}`"
-        :is="button.component"
+        :is="resolveComponent(button.component)"
         :disabled="!canSubmit"
         :label="getScopedContent('admin.createPage.form.labels', button.key)"
         :name="button.key"
@@ -64,7 +64,6 @@ import { useUsers } from '~~/composables/useUsers'
 import { usePageComponents } from '~~/composables/usePageComponents'
 import { FORM_NAMES } from '~~/constants/forms';
 import { createSafeId } from "~~/utils/createSafeId"
-import { MeshForm, MeshButton } from 'mesh-ui-components';
 
   const { query } = useRoute()
   const { createPage, createPageParentMeta, fetchPages, pages } = usePages()
@@ -90,7 +89,7 @@ import { MeshForm, MeshButton } from 'mesh-ui-components';
       return pages.value.map(page => page.title)
     }
     if (key === 'pageComponentSelect') {
-      return availablePageComponents.map((component : any) => component.name)
+      return availablePageComponents.map((component : any) => component.componentKey)
     }
     return []
   }

@@ -75,3 +75,7 @@ export const UserSchema = new Schema({
     required: true
   }
 })
+
+const ContentSchema = new Schema({
+  
+})

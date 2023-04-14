@@ -1,14 +1,15 @@
 <template>
   Header HEADER ETC
   <header>
-    <h1>{{ content.title }}</h1>
+    <!-- <h1>{{ content.title }}</h1>
     <p>{{ content.text }}</p>
-    <!-- <ul>
+    <p>{{ content.description }}</p>
+    <ul>
       <li
         v-for="item of content.list"
         :key="item"
       >
-        {{ item }}
+        {{ item.text }}
       </li>
     </ul>
     <a :href="content.link.link">{{ content.link.label }}</a> -->
@@ -25,10 +26,14 @@ import { usePageComponents } from '~~/composables/usePageComponents';
     creationMode: {
       type: Boolean,
       default: false
+    },
+    id: {
+      type: String,
+      required: true
     }
   })
 
-  const { createPageComponentContent } = usePageComponents()
+  const { createPageComponentFields } = usePageComponents()
 
   const fieldModel = {
     title: {
@@ -38,6 +43,10 @@ import { usePageComponents } from '~~/composables/usePageComponents';
     text: {
       type: 'text',
       default: 'this is a text'
+    },
+    description: {
+      type: 'text',
+      default: 'this is a description'
     },
     list: {
       type: 'list',
@@ -57,6 +66,6 @@ import { usePageComponents } from '~~/composables/usePageComponents';
   }
 
   if (props.creationMode) {
-    createPageComponentContent(fieldModel)
+    createPageComponentFields(fieldModel, props.id)
   }
 </script>

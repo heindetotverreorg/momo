@@ -6,7 +6,10 @@ export default defineNuxtConfig({
   },
   components: {
     dirs: [
-      "./components",
+      {
+        "path": "./components",
+        "global": true
+      },
       {
         "path": "./theme/components",
         "global": true
