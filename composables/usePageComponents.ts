@@ -19,6 +19,14 @@ export const usePageComponents = () => {
     }
   }
 
+  const addContentToComponent = (componentId : string, content : Record<string, any>) => {
+    const componentArray = pageComponentsState
+    const componentToUpdate = componentArray.value?.find(c => c.id === componentId)
+    if (componentToUpdate) {
+      componentToUpdate.meta.content = content
+    }
+  }
+
   const createPageComponentFields = (fieldModel : ThemeFieldModel, componentId : string) => {
     const createdPageComponentFields = createPageComponentFieldModel(fieldModel)
     setPageComponentFields(createdPageComponentFields, componentId)
@@ -30,6 +38,17 @@ export const usePageComponents = () => {
       return { ...acc }
     }, {})
     if (pageComponent) pageComponent.meta.content = content
+  }
+
+  const deleteComponentFromPage = (componentId : string) => {
+    const componentArray = pageComponentsState
+    componentArray.value = componentArray.value?.filter(c => c.id !== componentId)
+    setPageComponents(componentArray.value)
+  }
+
+  const pageContent = (componentId : string) => {
+    const pageComponent = pageComponentsState.value.find(selectedComponent => selectedComponent.id === componentId)
+    return pageComponent?.meta.content
   }
 
   const sanitizedPageComponents = () : { componentKey : string, id : string, meta : any }[] => {
@@ -45,20 +64,6 @@ export const usePageComponents = () => {
     })
   }
 
-  const deleteComponentFromPage = (componentId : string) => {
-    const componentArray = pageComponentsState
-    componentArray.value = componentArray.value?.filter(c => c.id !== componentId)
-    setPageComponents(componentArray.value)
-  }
-
-  const addContentToComponent = (componentId : string, content : Record<string, any>) => {
-    const componentArray = pageComponentsState
-    const componentToUpdate = componentArray.value?.find(c => c.id === componentId)
-    if (componentToUpdate) {
-      componentToUpdate.meta.content = content
-    }
-  }
-
   return {
     addComponentToPage,
     addContentToComponent,
@@ -67,7 +72,7 @@ export const usePageComponents = () => {
     deleteComponentFromPage,
     setPageComponents,
     setEditContentId,
-    content: pageComponentsState,
+    content: pageContent,
     editContentId,
     fields: pageComponentFieldState,
     pageComponents: pageComponentsState

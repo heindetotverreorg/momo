@@ -1,10 +1,10 @@
 <template>
   Header HEADER ETC
   <header>
-    <!-- <h1>{{ content.title }}</h1>
+    <h1>{{ content.title }}</h1>
     <p>{{ content.text }}</p>
     <p>{{ content.description }}</p>
-    <ul>
+    <!-- <ul>
       <li
         v-for="item of content.list"
         :key="item"
