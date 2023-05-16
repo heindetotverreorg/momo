@@ -1,82 +1,83 @@
 <template>
-  <p v-if="!hasHomePage">If you don't have a home page yet, you first have to make one</p>
-  <MeshForm
-    :content="getContent"
-    :name="form.meta.name"
-    :formValues="formValues"
-    @update:formValues="formValues = $event"
-    @submit="onSubmit"
-  >
-    <template #fields="{ forceValidation, formValues, getSecondValdiationValue, onValidate, validationMessages }">
-      <section
-        v-for="section of form.meta.sections"
-        :key="section"
-      >
-        <h2>{{ section }}</h2>
-        <component
-          v-for="field of form.sections[section]"
-          :key="field.key"
-          :id="`${field.key}_${field.id}`"
-          :is="resolveComponent(field.component)"
-          :disabled="field.disabled"
-          :force-validation="forceValidation"
-          :highlight-validation="field.highlightValidation"
-          :label="getScopedContent('admin.createPage.form.labels', field.key)"
-          :name="field.key"
-          :options="getOptions(field.key)"
-          :required="field.required"
-          :second-validation-value="getSecondValdiationValue(field.secondValidationValue)"
-          :type="field.type"
-          :validators="field.validators"
-          v-model="formValues[field.key]"
-          @validate="onValidate(field.key, $event)"
+  <div>
+    <MeshForm
+      :content="getContent"
+      :name="form.meta.name"
+      :formValues="formValues"
+      @update:formValues="formValues = $event"
+      @submit="onSubmit"
+    >
+      <template #fields="{ forceValidation, formValues, getSecondValdiationValue, onValidate, validationMessages }">
+        <section
+          v-for="section of form.meta.sections"
+          :key="section"
         >
-          <template #label>{{ getScopedContent('admin.createPage.form.labels', field.key) }}</template>
-          <template #error-message>
-            <p v-for="{ key } of validationMessages(field.key)">{{ getScopedContent('global.forms.validators', key) }}</p>
-          </template>
-        </component>
-      </section>
-    </template>
-    <template #buttons="{ canSubmit, updateFormState }">
-      <MeshButton
-        v-for="button of form.buttons"
-        class="m-t-1"
-        :id="`${button.key}_${button.id}`"
-        :is="resolveComponent(button.component)"
-        :disabled="!canSubmit"
-        :label="getScopedContent('admin.createPage.form.labels', button.key)"
-        :name="button.key"
-        :type="button.type"
-        :variant="button.variant"
-        @disabledClick="updateFormState({ validateStrict: true })"
-      />
-    </template>
-  </MeshForm>
-  <p>{{ response }}</p>
+          <h2>{{ section }}</h2>
+          <component
+            v-for="field of form.sections[section]"
+            :key="field.key"
+            :id="`${field.key}_${field.id}`"
+            :is="resolveComponent(field.component)"
+            :disabled="field.disabled"
+            :force-validation="forceValidation"
+            :highlight-validation="field.highlightValidation"
+            :label="getScopedContent('admin.createPage.form.labels', field.key)"
+            :name="field.key"
+            :options="getOptions(field.key)"
+            :required="field.required"
+            :second-validation-value="getSecondValdiationValue(field.secondValidationValue)"
+            :type="field.type"
+            :validators="field.validators"
+            v-model="formValues[field.key]"
+            @validate="onValidate(field.key, $event)"
+          >
+            <template #label>{{ getScopedContent('admin.createPage.form.labels', field.key) }}</template>
+            <template #error-message>
+              <p v-for="{ key } of validationMessages(field.key)">{{ getScopedContent('global.forms.validators', key) }}</p>
+            </template>
+          </component>
+        </section>
+      </template>
+      <template #buttons="{ canSubmit, updateFormState }">
+        <MeshButton
+          v-for="button of form.buttons"
+          class="m-t-1"
+          :id="`${button.key}_${button.id}`"
+          :is="resolveComponent(button.component)"
+          :disabled="!canSubmit"
+          :label="getScopedContent('admin.createPage.form.labels', button.key)"
+          :name="button.key"
+          :type="button.type"
+          :variant="button.variant"
+          @disabledClick="updateFormState({ validateStrict: true })"
+        />
+      </template>
+    </MeshForm>
+    <p v-if="!hasHomePage">If you don't have a home page yet, you first have to make one</p>
+  </div>
 </template>
 <script setup lang="ts">
 import { usePages } from '~~/composables/usePages'
 import { createFormsModel } from '~~/models/forms'
 import { useForms } from '~~/composables/useForms'
 import { useContent } from '~~/composables/useContent'
+import { useMessages } from '~~/composables/useMessages'
 import { useUsers } from '~~/composables/useUsers'
 import { usePageComponents } from '~~/composables/usePageComponents'
 import { FORM_NAMES } from '~~/constants/forms';
 import { createSafeId } from "~~/utils/createSafeId"
 
   const { query } = useRoute()
-  const { createPage, createPageParentMeta, fetchPages, pages } = usePages()
-  const { fetchSingleUser, user } = useUsers()
+  const { createPage, createPageParentMeta, pages } = usePages()
+  const { user } = useUsers()
   const { getContent, getScopedContent } = useContent()
+  const { setMessage } = useMessages()
   const { multiPartForm } = useForms()
   const { availablePageComponents } = usePageComponents()
   
   const formValues = ref({}) as Record<string, any>
   const response = ref()
   const hasHomePage = ref()
-
-  await Promise.all([fetchSingleUser(), fetchPages()])
 
   const editMode = !!query?.id
   const { form } = multiPartForm(createFormsModel(FORM_NAMES.CREATE_PAGE, editMode))
@@ -88,7 +89,7 @@ import { createSafeId } from "~~/utils/createSafeId"
     if (key === 'menuParent') {
       return pages.value.map(page => page.title)
     }
-    if (key === 'pageComponentSelect') {
+    if (key === 'pageComponents') {
       return availablePageComponents.map((component : any) => component.componentKey)
     }
     return []
@@ -96,18 +97,19 @@ import { createSafeId } from "~~/utils/createSafeId"
 
   const onSubmit = async (form : Record<string, any>) => {
     const { pathArray, path } = createPageParentMeta(form.formValues.menuParent, form.formValues.slug)
-    
     const page = {
       id: `${form.formValues.name}_${createSafeId()}`,
       parent: pathArray,
       path: path,
       menuOrder: 0,
-      pageComponents: [],
       author: user.value?.id,
       ...form.formValues
     }
+    page.isInMenu = !!page.isInMenu
     delete page.menuParent
-    response.value = await createPage(page)
+    const response = await createPage(page)
+    console.log(response)
+    setMessage(JSON.stringify(response))
   }
 
   function homePageCheck() {

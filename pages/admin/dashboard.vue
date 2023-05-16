@@ -18,6 +18,5 @@ import { useUsers } from '~~/composables/useUsers'
   const { fetchPages } = usePages()
   const { fetchSingleUser } = useUsers()
 
-
   await Promise.all([fetchSingleUser(), fetchPages({ cached: false })])
 </script>

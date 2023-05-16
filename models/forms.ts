@@ -214,7 +214,7 @@ const forms = {
       {
         section: 'content',
         ...elements.componentSelect,
-        key: 'pageComponentSelect',
+        key: 'pageComponents',
         validators: [notempty]
       },
       {

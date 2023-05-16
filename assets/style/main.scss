@@ -1,3 +1,14 @@
+@import "./variables.scss";
+
 .box--horizontal {
   display: flex;
+}
+
+.spread {
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
 }

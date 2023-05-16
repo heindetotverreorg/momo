@@ -1,6 +1,26 @@
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 
+const PageComponentsSchema = new Schema({
+  componentKey: {
+    type: String,
+    required: true
+  },
+  id: {
+    type: String,
+    required: true
+  },
+  meta: {
+    name: {
+      type: String,
+      required: true
+    },
+    content: {
+      type: Schema.Types.Mixed
+    }
+  },
+})
+
 export const PageSchema = new Schema({
   name: {
     type: String,
@@ -36,7 +56,7 @@ export const PageSchema = new Schema({
     required: true
   },
   pageComponents: {
-    type: Array,
+    type: [PageComponentsSchema],
     required: true
   },
   id: {
@@ -74,8 +94,4 @@ export const UserSchema = new Schema({
     type: String,
     required: true
   }
-})
-
-const ContentSchema = new Schema({
-  
 })

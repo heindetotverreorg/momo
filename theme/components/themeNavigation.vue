@@ -1,8 +1,8 @@
 <template>
   Some Component COMPONENT ETC
   <section>
-    <!-- <p>{{ content.text }}</p>
-    <p>{{ content.decription }}</p> -->
+    <p>{{ content.text }}</p>
+    <p>{{ content.decription }}</p>
   </section>
 </template>
 <script lang="ts" setup>

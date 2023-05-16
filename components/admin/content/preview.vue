@@ -15,6 +15,4 @@
 import { usePageComponents } from '~~/composables/usePageComponents'
 
   const { content, pageComponents, deleteComponentFromPage, setEditContentId } = usePageComponents()
-
-
 </script>

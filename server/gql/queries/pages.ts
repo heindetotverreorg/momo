@@ -6,7 +6,14 @@ export const createPageMutation = gql`
       name
       slug
       isInMenu
-      pageComponents
+      pageComponents {
+        componentKey
+        id
+        meta {
+          name
+          content
+        }
+      }
       parent
       path
       menuOrder
@@ -33,7 +40,14 @@ export const fetchPagesQuery = gql`
       name
       slug
       isInMenu
-      pageComponents
+      pageComponents {
+        id
+        componentKey
+        meta {
+          name
+          content
+        }
+      }
       parent
       path
       menuOrder
@@ -52,7 +66,14 @@ export const fetchSinglePageQuery = gql`
       name
       slug
       isInMenu
-      pageComponents
+      pageComponents {
+        id
+        componentKey
+        meta {
+          name
+          content
+        }
+      }
       parent
       path
       menuOrder

@@ -21,6 +21,7 @@ export const usePages = () => {
       if (result?.data) {
         const { data } = result
         addPage(data.createPage)
+        return data.createPage
       }
     } catch (error) {
       return error

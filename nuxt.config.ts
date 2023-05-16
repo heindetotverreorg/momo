@@ -40,12 +40,16 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "@/theme/assets/style/theme.scss";`
+          additionalData: `
+            @import "@/theme/assets/style/theme.scss";
+            @import "@/assets/style/variables.scss";
+          `
         }
       }
     }
   },
   css: [
+    '@/assets/style/reset.scss',
     '@/assets/style/main.scss'
   ]
 })

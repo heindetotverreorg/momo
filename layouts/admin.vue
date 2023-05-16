@@ -3,6 +3,7 @@
     <div class="admin__bar">
       <NuxtLink to="/admin/dashboard">Dashboard</NuxtLink>
     </div>
+    <Messages />
     <slot />
   </div>
 </template>

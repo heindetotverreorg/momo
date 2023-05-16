@@ -9,11 +9,21 @@ interface Page {
   title: string
   description: string
   keywords: string
-  pageComponents: string[]
+  pageComponents: pageComponentContent[]
   id: string
   author: string
 }
 
+interface pageComponentContent {
+  componentKey: string,
+  id: string,
+  meta: {
+    name: string,
+    content: Record<string, any>
+  }
+}
+
 export {
-  Page
+  Page,
+  pageComponentContent
 }

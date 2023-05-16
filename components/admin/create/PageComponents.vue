@@ -1,5 +1,5 @@
 <template>
-  pageComponentSelect
+  pageComponents select
   <MeshSelect
     :autocomplete="autocomplete"
     :disabled="disabled"
@@ -19,6 +19,7 @@
   <ul v-if="pageComponents.length">
     <li
       v-for="component of pageComponents"
+      :key="component.id"
     >
       <div>
         <p>{{ component.id }}</p>
@@ -41,6 +42,7 @@
 <script setup lang="ts">
 import { usePageComponents } from '~~/composables/usePageComponents'
 import { shareableProps } from 'mesh-ui-components'
+import { pageComponentContent } from '~~/types/pages'
 
   const props = defineProps({
     ...shareableProps,
@@ -64,6 +66,7 @@ import { shareableProps } from 'mesh-ui-components'
     addComponentToPage,
     addContentToComponent,
     deleteComponentFromPage,
+    setPageComponents,
     setEditContentId,
   } = usePageComponents()
 
@@ -71,6 +74,10 @@ import { shareableProps } from 'mesh-ui-components'
   const formLabels = ref()
   const formValues = ref()
   const selectedForm = ref()
+
+  onMounted(() => {
+    setPageComponentsFromUpstream()
+  })
 
   watch(currentValue, () => {
     if (currentValue.value) {
@@ -92,7 +99,8 @@ import { shareableProps } from 'mesh-ui-components'
     }
     selectedForm.value = {
       meta: { name: `form_${editContentId.value}` },
-      fields: fields.value[editContentId.value]
+      fields: fields.value[editContentId.value],
+      id: editContentId.value
     }
     const contentFromState = pageComponents.value.find(component => component.id === editContentId.value)?.meta?.content
     if (contentFromState) {
@@ -103,5 +111,13 @@ import { shareableProps } from 'mesh-ui-components'
   const onInput = (formValues : Record<string, any>) => {
     addContentToComponent(editContentId.value, formValues)
     emit('update:modelValue', pageComponents)
+  }
+
+  function setPageComponentsFromUpstream () {
+    if (props.modelValue) {
+      setPageComponents(props.modelValue as pageComponentContent[])
+    } else {
+      setPageComponents([])
+    }
   }
 </script>

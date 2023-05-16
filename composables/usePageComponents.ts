@@ -20,8 +20,8 @@ export const usePageComponents = () => {
   }
 
   const addContentToComponent = (componentId : string, content : Record<string, any>) => {
-    const componentArray = pageComponentsState
-    const componentToUpdate = componentArray.value?.find(c => c.id === componentId)
+    const componentArray = pageComponentsState.value
+    const componentToUpdate = componentArray.find(c => c.id === componentId)
     if (componentToUpdate) {
       componentToUpdate.meta.content = content
     }
@@ -31,19 +31,22 @@ export const usePageComponents = () => {
     const createdPageComponentFields = createPageComponentFieldModel(fieldModel)
     setPageComponentFields(createdPageComponentFields, componentId)
     const pageComponent = pageComponentsState.value.find(selectedComponent => selectedComponent.id === componentId)
-    const content = createdPageComponentFields.reduce((acc, field) => {
+    const fetchedContent = pageComponent?.meta.content
+    const defaultContent = createdPageComponentFields.reduce((acc, field) => {
       if (field) {
         return { ...acc, [field.key]: field.default }
       }
       return { ...acc }
     }, {})
-    if (pageComponent) pageComponent.meta.content = content
+    if (!Object.values(fetchedContent).length) {
+      if (pageComponent) pageComponent.meta.content = defaultContent
+    }
   }
 
   const deleteComponentFromPage = (componentId : string) => {
-    const componentArray = pageComponentsState
-    componentArray.value = componentArray.value?.filter(c => c.id !== componentId)
-    setPageComponents(componentArray.value)
+    const componentArray = pageComponentsState.value
+    const updatedComponentArray = componentArray.filter(c => c.id !== componentId)
+    setPageComponents(updatedComponentArray)
   }
 
   const pageContent = (componentId : string) => {
@@ -59,7 +62,7 @@ export const usePageComponents = () => {
         meta: {
           name: component.name,
           content: []
-        },
+        }
       }
     })
   }
