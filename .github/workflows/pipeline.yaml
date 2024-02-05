@@ -1,12 +1,11 @@
-name: MoMo Pipeline
-run-name: Run tests and publish MoMo
-on: [push]
-jobs:
-  MoMoPipeline:
+name: Momo deploy
+on: workflow_dispatch
+jobs: 
+  firstjob: 
     runs-on: ubuntu-latest
-    steps:
-      - run: echo 'run unit tests'
-      - run: echo 'run e2e tests'
-      - run: echo 'run lighthouse test'
-      - run: echo 'publish'
-      - run: echo 'this job's status is ${{ job.status }}'
+    steps: 
+      - name: Print greeting
+        run: echo "Hello world"
+      - name: Print goodbye
+        run: echo "Done - bye!"
+        
