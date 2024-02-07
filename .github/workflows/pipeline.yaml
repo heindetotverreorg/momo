@@ -9,7 +9,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.4.0'
+          node-version: '18'
           architecture: 'aarch64'
       - name: Install dependencies
         run: npm ci
