@@ -5,7 +5,7 @@ on:
       - master
 jobs: 
   deploy: 
-    runs-on: self-hosted
+    runs-on: [self-hosted, pi]
     steps: 
       - name: Get code
         uses: actions/checkout@v4
