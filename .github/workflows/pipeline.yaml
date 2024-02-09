@@ -1,8 +1,5 @@
 name: Momo deploy
-on: 
-  push: 
-    branches: 
-      - master
+on: push
 jobs: 
   deploy: 
     runs-on: self-hosted
