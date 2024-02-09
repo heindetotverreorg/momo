@@ -33,8 +33,8 @@ const connect = async (connectionString : string) => {
   try {
     mongoose.set('strictQuery', false)
     await mongoose.connect(connectionString)
-  } catch {
-    throw new Error(`No connection to database`)
+  } catch(error) {
+    throw new Error(`No connection to database - ${error}`)
   }
 }
 
